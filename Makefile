@@ -2,7 +2,7 @@ NAME = minishell
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
-SRC = main.c Signal/signal.c Built-In/Exit/exit.c Built-In/Pwd/pwd.c Built-In/Echo/echo.c Built-In/Cd/cd.c Built-In/Env/env.c
+SRC = main.c Signal/signal.c Built-In/Exit/exit.c Built-In/Pwd/pwd.c Built-In/Echo/echo.c Built-In/Cd/cd.c Built-In/Env/env.c Built-In/Export/export.c Built-In/Unset/unset.c
 OBJ = $(SRC:.c=.o)
 
 all : $(NAME)

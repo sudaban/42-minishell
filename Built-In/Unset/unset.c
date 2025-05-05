@@ -1,0 +1,54 @@
+#include "unset.h"
+#include <stdlib.h>
+
+static int	match_key(char *entry, char *key)
+{
+	int	i;
+
+	i = 0;
+	while (key[i] && entry[i] && key[i] == entry[i])
+		i++;
+	if (key[i] == '\0' && entry[i] == '=')
+		return (1);
+	return (0);
+}
+
+static char	**remove_env_var(char **env, char *key)
+{
+	int		i;
+	int		j;
+	int		count;
+	char	**new_env;
+
+	count = 0;
+	while (env[count])
+		count++;
+	new_env = malloc(sizeof(char *) * count);
+	if (!new_env)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (env[i])
+	{
+		if (match_key(env[i], key))
+			free(env[i]);
+		else
+			new_env[j++] = env[i];
+		i++;
+	}
+	new_env[j] = NULL;
+	return (new_env);
+}
+
+int	builtin_unset(char **args, t_shell *shell)
+{
+	int	i;
+
+	i = 1;
+	while (args[i])
+	{
+		shell->env = remove_env_var(shell->env, args[i]);
+		i++;
+	}
+	return (0);
+}
