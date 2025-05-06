@@ -1,5 +1,18 @@
-#include <string.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   echo.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/06 16:23:27 by sdaban            #+#    #+#             */
+/*   Updated: 2025/05/06 16:23:28 by sdaban           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <unistd.h>
+#include "../../Libft/libft.h"
+#include "../../Libft/libft.h"
 
 int	is_n_flag(char *arg)
 {
@@ -31,7 +44,7 @@ int	builtin_echo(char **args)
 	}
 	while (args[i])
 	{
-		write(1, args[i], strlen(args[i]));
+		write(1, args[i], ft_strlen(args[i]));
 		if (args[i + 1])
 			write(1, " ", 1);
 		i++;

@@ -1,33 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/06 16:18:20 by sdaban            #+#    #+#             */
-/*   Updated: 2025/05/06 16:20:14 by sdaban           ###   ########.fr       */
+/*   Created: 2025/05/06 12:33:33 by sdaban            #+#    #+#             */
+/*   Updated: 2025/05/06 16:14:52 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef LIBFT_H
+# define LIBFT_H
 
 # include <stddef.h>
 
-typedef struct s_shell
-{
-	char	**env;
-}	t_shell;
-
-char	*ft_strdup(const char *s);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
 size_t	ft_strlen(const char *s);
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
+char	*ft_strchr(const char *s, int c);
+char	**ft_split(char const *s, char c);
+char	*ft_substr(const char *s, unsigned int start, size_t len);
+void	ft_free_double_ptr(char **str);
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 void	ft_putstr_fd(char *s, int fd);
-char	*get_env_value(const char *key, char **env);
-char	*expand_variables(const char *input, char **env);
-char	*find_executable(char *cmd, char **env);
-void	exec_external(char **args, char **env);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+char	*ft_strdup(const char *s1);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
+char	*ft_strchr(const char *s, int c);
 
 #endif

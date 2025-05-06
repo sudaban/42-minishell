@@ -1,18 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.h                                             :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/06 16:23:40 by sdaban            #+#    #+#             */
-/*   Updated: 2025/05/06 16:23:41 by sdaban           ###   ########.fr       */
+/*   Created: 2025/05/06 13:22:30 by sdaban            #+#    #+#             */
+/*   Updated: 2025/05/06 16:15:10 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXIT_H
-# define EXIT_H
+#include "libft.h"
+#include <stdlib.h>
 
-int	builtin_exit(char **args);
+char	*ft_strdup(const char *s1)
+{
+	char	*str2;
+	size_t	len;
 
-#endif
+	len = ft_strlen(s1);
+	str2 = (char *)malloc(len + 1);
+	if ((str2) == NULL)
+		return (NULL);
+	ft_memcpy(str2, s1, len + 1);
+	return (str2);
+}

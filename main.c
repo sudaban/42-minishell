@@ -14,66 +14,67 @@
 #include "Built-In/Unset/unset.h"
 #include "minishell.h"
 
-static void	execute_command(char **args, t_shell *shell)
+static void execute_command(char **args, t_shell *shell)
 {
-	if (strcmp(args[0], "exit") == 0)
-		builtin_exit(args);
-	else if (strcmp(args[0], "pwd") == 0)
-		builtin_pwd(args);
-	else if (strncmp(args[0], "echo", 5) == 0)
-		builtin_echo(args);
-	else if (strncmp(args[0], "cd", 3) == 0)
-		builtin_cd(args);
-	else if (strncmp(args[0], "env", 4) == 0)
-		builtin_env(shell->env);
-	else if (strncmp(args[0], "export", 7) == 0)
-		builtin_export(args, shell);
-	else if (strncmp(args[0], "unset", 6) == 0)
-		builtin_unset(args, shell);
-	else
-		printf("Command not found: %s\n", args[0]);
+    if (strcmp(args[0], "exit") == 0)
+        builtin_exit(args);
+    else if (strcmp(args[0], "pwd") == 0)
+        builtin_pwd(args);
+    else if (strncmp(args[0], "echo", 5) == 0)
+        builtin_echo(args);
+    else if (strncmp(args[0], "cd", 3) == 0)
+        builtin_cd(args);
+    else if (strncmp(args[0], "env", 4) == 0)
+        builtin_env(shell->env);
+    else if (strncmp(args[0], "export", 7) == 0)
+        builtin_export(args, shell);
+    else if (strncmp(args[0], "unset", 6) == 0)
+        builtin_unset(args, shell);
+    else
+        exec_external(args, shell->env);
 }
 
-int	main(int argc, char **argv, char **envp)
+int main(int argc, char **argv, char **envp)
 {
-	(void)argc;
-	(void)argv;
-	t_shell	shell;
-	char	*input;
-	char	*args[100];
-	int		i;
+    (void)argc;
+    (void)argv;
+    t_shell shell;
+    char *input;
+    char *args[100];
+    int i;
 
-	shell.env = envp;
+    shell.env = envp;
 
-	// Setup signal handlers
-	setup_signals();
+    setup_signals();
 
-	while (1)
-	{
-		input = readline("aamonshell$ ");
-		if (!input) // ctrl-D (EOF)
-		{
-			printf("exit\n");
-			free(input);
-			break;
-		}
-		if (*input)
-			add_history(input);
+    while (1)
+    {
+        input = readline("aamonshell$ ");
+        if (!input)
+        {
+            printf("exit\n");
+            free(input);
+            break;
+        }
+        if (*input)
+            add_history(input);
 
-		i = 0;
-		char *token = strtok(input, " ");
-		while (token)
-		{
-			args[i++] = token;
-			token = strtok(NULL, " ");
-		}
-		args[i] = NULL;
+        char *expanded_input = expand_variables(input, shell.env);
+        i = 0;
+        char *token = strtok(expanded_input, " ");
+        while (token)
+        {
+            args[i++] = token;
+            token = strtok(NULL, " ");
+        }
+        args[i] = NULL;
 
-		if (args[0])
-		{
-			execute_command(args, &shell);
-		}
-		free(input);
-	}
-	return (0);
+        if (args[0])
+        {
+            execute_command(args, &shell);
+        }
+        free(expanded_input);
+        free(input);
+    }
+    return (0);
 }

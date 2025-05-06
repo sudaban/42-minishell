@@ -1,5 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/06 16:23:32 by sdaban            #+#    #+#             */
+/*   Updated: 2025/05/06 16:23:33 by sdaban           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <unistd.h>
-#include <string.h>
+#include "../../Libft/libft.h"
 
 int	builtin_env(char **envp)
 {
@@ -8,9 +20,9 @@ int	builtin_env(char **envp)
 	i = 0;
 	while (envp[i])
 	{
-		if (strchr(envp[i], '='))
+		if (ft_strchr(envp[i], '='))
 		{
-			write(1, envp[i], strlen(envp[i]));
+			write(1, envp[i], ft_strlen(envp[i]));
 			write(1, "\n", 1);
 		}
 		i++;

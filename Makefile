@@ -5,6 +5,8 @@ CFLAGS = -Wall -Wextra -Werror
 SRC = \
 	main.c \
 	Signal/signal.c \
+
+SRC += \
 	Built-In/Exit/exit.c \
 	Built-In/Pwd/pwd.c \
 	Built-In/Echo/echo.c \
@@ -12,7 +14,22 @@ SRC = \
 	Built-In/Env/env.c \
 	Built-In/Export/export.c \
 	Built-In/Export/export_utils.c \
-	Built-In/Unset/unset.c
+	Built-In/Unset/unset.c \
+
+SRC += \
+	Utils/utils.c \
+
+SRC += \
+	Libft/ft_strlen.c \
+	Libft/ft_split.c \
+	Libft/ft_strchr.c \
+	Libft/ft_free_double_ptr.c \
+	Libft/ft_substr.c \
+	Libft/ft_strlcpy.c \
+	Libft/ft_strncmp.c \
+	Libft/ft_strdup.c \
+	Libft/ft_memcpy.c 
+
 
 OBJ = $(SRC:.c=.o)
 
