@@ -17,6 +17,7 @@ SRC += \
 	Built-In/Unset/unset.c \
 
 SRC += \
+	Lexer/lexer.c \
 	Utils/utils.c \
 
 SRC += \
@@ -28,7 +29,9 @@ SRC += \
 	Libft/ft_strlcpy.c \
 	Libft/ft_strncmp.c \
 	Libft/ft_strdup.c \
-	Libft/ft_memcpy.c 
+	Libft/ft_memcpy.c \
+	Libft/ft_isspace.c \
+	Libft/ft_isalnum.c
 
 
 OBJ = $(SRC:.c=.o)

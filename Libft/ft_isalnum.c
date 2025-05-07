@@ -1,28 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/06 16:18:20 by sdaban            #+#    #+#             */
-/*   Updated: 2025/05/06 17:00:08 by sdaban           ###   ########.fr       */
+/*   Created: 2025/05/07 12:37:12 by sdaban            #+#    #+#             */
+/*   Updated: 2025/05/07 12:37:13 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-# include <stddef.h>
-
-typedef struct s_shell
+int	ft_isalnum(int c)
 {
-	char	**env;
-}	t_shell;
-
-char	*get_env_value(const char *key, char **env);
-char	*expand_variables(const char *input, char **env);
-char	*find_executable(char *cmd, char **env);
-void	exec_external(char **args, char **env);
-
-#endif
+	if ((c >= 'A' && c <= 'Z')
+		|| (c >= 'a' && c <= 'z')
+		|| (c >= '0' && c <= '9'))
+		return (1);
+	return (0);
+}

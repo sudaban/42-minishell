@@ -1,28 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_isspace.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/06 16:18:20 by sdaban            #+#    #+#             */
-/*   Updated: 2025/05/06 17:00:08 by sdaban           ###   ########.fr       */
+/*   Created: 2025/05/07 12:38:22 by sdaban            #+#    #+#             */
+/*   Updated: 2025/05/07 12:38:23 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-# include <stddef.h>
-
-typedef struct s_shell
+int ft_isspace(int c)
 {
-	char	**env;
-}	t_shell;
-
-char	*get_env_value(const char *key, char **env);
-char	*expand_variables(const char *input, char **env);
-char	*find_executable(char *cmd, char **env);
-void	exec_external(char **args, char **env);
-
-#endif
+    if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r')
+        return (1);
+    return (0);
+}
