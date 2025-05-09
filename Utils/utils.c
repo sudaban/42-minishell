@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/09 13:35:12 by sdaban            #+#    #+#             */
+/*   Updated: 2025/05/09 13:58:05 by sdaban           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <ctype.h>
 #include <sys/wait.h>
 
 #include "../minishell.h"
@@ -58,7 +69,7 @@ char	*expand_variables(const char *input, char **env)
 		{
 			i++;
 			k = 0;
-			while (input[i] && (isalnum(input[i]) || input[i] == '_'))
+			while (input[i] && (ft_isalnum(input[i]) || input[i] == '_'))
 				var[k++] = input[i++];
 			var[k] = '\0';
 			val = get_env_value(var, env);

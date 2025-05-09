@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:33:33 by sdaban            #+#    #+#             */
-/*   Updated: 2025/05/07 12:38:34 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/05/09 13:33:19 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,6 @@ char	*ft_strdup(const char *s1);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 char	*ft_strchr(const char *s, int c);
 int		ft_isalnum(int c);
-int ft_isspace(int c);
+int		ft_isspace(int c);
 
 #endif

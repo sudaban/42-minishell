@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:18:20 by sdaban            #+#    #+#             */
-/*   Updated: 2025/05/06 17:00:08 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/05/09 13:41:47 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 # define MINISHELL_H
 
 # include <stddef.h>
+# include <stdbool.h>
 
 typedef struct s_shell
 {
 	char	**env;
+	bool	debug;
 }	t_shell;
 
 char	*get_env_value(const char *key, char **env);

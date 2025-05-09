@@ -15,101 +15,103 @@
 #include "Built-In/Export/export.h"
 #include "Built-In/Unset/unset.h"
 
-// static void execute_command(char **args, t_shell *shell)
-// {
-//     if (strcmp(args[0], "exit") == 0)
-//         builtin_exit(args);
-//     else if (strcmp(args[0], "pwd") == 0)
-//         builtin_pwd(args);
-//     else if (strncmp(args[0], "echo", 5) == 0)
-//         builtin_echo(args);
-//     else if (strncmp(args[0], "cd", 3) == 0)
-//         builtin_cd(args);
-//     else if (strncmp(args[0], "env", 4) == 0)
-//         builtin_env(shell->env);
-//     else if (strncmp(args[0], "export", 7) == 0)
-//         builtin_export(args, shell);
-//     else if (strncmp(args[0], "unset", 6) == 0)
-//         builtin_unset(args, shell);
-//     else
-//         exec_external(args, shell->env);
-// }
-
-// int main(int argc, char **argv, char **envp)
-// {
-//     (void)argc;
-//     (void)argv;
-//     t_shell shell;
-//     char *input;
-//     char *args[100];
-//     int i;
-
-//     shell.env = envp;
-
-//     setup_signals();
-
-//     while (1)
-//     {
-//         input = readline("aamonshell$ ");
-//         if (!input)
-//         {
-//             printf("exit\n");
-//             free(input);
-//             break;
-//         }
-//         if (*input)
-//             add_history(input);
-
-//         char *expanded_input = expand_variables(input, shell.env);
-//         i = 0;
-//         char *token = strtok(expanded_input, " ");
-//         while (token)
-//         {
-//             args[i++] = token;
-//             token = strtok(NULL, " ");
-//         }
-//         args[i] = NULL;
-
-//         if (args[0])
-//         {
-//             execute_command(args, &shell);
-//         }
-//         free(expanded_input);
-//         free(input);
-//     }
-//     return (0);
-// }
-
-int	main(int argc, char **argv, char **envp)
+static void execute_command(char **args, t_shell *shell)
 {
-	(void)argc;
-	(void)argv;
-    (void)envp;
-	//t_shell	shell;
-	char	*input;
-	t_token	*tokens;
-
-	//shell.env = envp;
-	setup_signals();
-
-	while (1)
-	{
-		input = readline("aamonshell$ ");
-		if (!input)
-		{
-			printf("exit\n");
-			break;
-		}
-		if (*input)
-			add_history(input);
-
-		tokens = lexer(input);
-		print_token_debug(tokens);
-
-		// TODO: parser(tokens) + execute(parsed_command)
-
-		free_tokens(tokens);
-		free(input);
-	}
-	return (0);
+    if (strcmp(args[0], "exit") == 0)
+        builtin_exit(args);
+    else if (strcmp(args[0], "pwd") == 0)
+        builtin_pwd(args);
+    else if (strncmp(args[0], "echo", 5) == 0)
+        builtin_echo(args);
+    else if (strncmp(args[0], "cd", 3) == 0)
+        builtin_cd(args);
+    else if (strncmp(args[0], "env", 4) == 0)
+        builtin_env(shell->env);
+    else if (strncmp(args[0], "export", 7) == 0)
+        builtin_export(args, shell);
+    else if (strncmp(args[0], "unset", 6) == 0)
+        builtin_unset(args, shell);
+    else
+        exec_external(args, shell->env);
 }
+
+int main(int argc, char **argv, char **envp)
+{
+    (void)argc;
+    (void)argv;
+    t_shell shell;
+    char *input;
+    char *args[100];
+    int i;
+
+    shell.env = envp;
+
+    setup_signals();
+
+    while (1)
+    {
+        input = readline("aamonshell$ ");
+        if (!input)
+        {
+            printf("exit\n");
+            free(input);
+            break;
+        }
+        if (*input)
+            add_history(input);
+
+        char *expanded_input = expand_variables(input, shell.env);
+        i = 0;
+        char *token = strtok(expanded_input, " ");
+        while (token)
+        {
+            args[i++] = token;
+            token = strtok(NULL, " ");
+        }
+        args[i] = NULL;
+
+        if (args[0])
+        {
+            execute_command(args, &shell);
+        }
+        free(expanded_input);
+        free(input);
+    }
+    return (0);
+}
+
+// int	main(int argc, char **argv, char **envp)
+// {
+// 	(void)argc;
+// 	(void)argv;
+//     (void)envp;
+// 	t_shell	shell;
+// 	char	*input;
+// 	t_token	*tokens;
+
+// 	//shell.env = envp;
+// 	shell.debug = true;
+// 	setup_signals();
+
+// 	while (1)
+// 	{
+// 		input = readline("minishell$ ");
+// 		if (!input)
+// 		{
+// 			printf("exit\n");
+// 			break;
+// 		}
+// 		if (*input)
+// 			add_history(input);
+
+// 		tokens = lexer(input);
+// 		if (shell.debug == true)
+// 			print_token_debug(tokens);
+
+// 		// TODO: parser(tokens) + execute(parsed_command)
+
+// 		free_tokens(tokens);
+// 		free(input);
+// 	}
+// 	return (0);
+// }
