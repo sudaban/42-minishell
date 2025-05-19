@@ -7,6 +7,7 @@
 #include "Signal/signal.h"
 #include "minishell.h"
 #include "Lexer/lexer.h"
+#include "Parser/parser.h"
 #include "Built-In/Exit/exit.h"
 #include "Built-In/Pwd/pwd.h"
 #include "Built-In/Echo/echo.h"
@@ -39,28 +40,38 @@ int main(int argc, char **argv, char **envp)
 {
     (void)argc;
     (void)argv;
+
     t_shell shell;
     char *input;
+    t_token *tokens;
     char *args[100];
     int i;
 
     shell.env = envp;
+    shell.debug = false;
 
     setup_signals();
 
     while (1)
     {
-        input = readline("aamonshell$ ");
+        input = readline("born2exec$ ");
         if (!input)
         {
             printf("exit\n");
-            free(input);
             break;
         }
+
         if (*input)
             add_history(input);
 
+        tokens = lexer(input);
+        t_command *cmd = parse_tokens(tokens);
+        
+        if (shell.debug == true)
+            print_token_debug(tokens);
+
         char *expanded_input = expand_variables(input, shell.env);
+
         i = 0;
         char *token = strtok(expanded_input, " ");
         while (token)
@@ -71,47 +82,34 @@ int main(int argc, char **argv, char **envp)
         args[i] = NULL;
 
         if (args[0])
-        {
             execute_command(args, &shell);
-        }
+
+        free_tokens(tokens);
         free(expanded_input);
         free(input);
+        free_command(cmd);
     }
-    return (0);
+    return 0;
 }
 
-// int	main(int argc, char **argv, char **envp)
+// int main(void)
 // {
-// 	(void)argc;
-// 	(void)argv;
-//     (void)envp;
-// 	t_shell	shell;
-// 	char	*input;
-// 	t_token	*tokens;
+//     char input[1024];
+    
+//     while (1)
+//     {
+//         printf("minishell> ");
+//         if (!fgets(input, sizeof(input), stdin))
+//             break;
 
-// 	//shell.env = envp;
-// 	shell.debug = true;
-// 	setup_signals();
+//         t_token *tokens = lexer(input);
+//         t_command *cmd = parse_tokens(tokens);
 
-// 	while (1)
-// 	{
-// 		input = readline("minishell$ ");
-// 		if (!input)
-// 		{
-// 			printf("exit\n");
-// 			break;
-// 		}
-// 		if (*input)
-// 			add_history(input);
+//         print_command_debug(cmd);  // Test için
 
-// 		tokens = lexer(input);
-// 		if (shell.debug == true)
-// 			print_token_debug(tokens);
-
-// 		// TODO: parser(tokens) + execute(parsed_command)
-
-// 		free_tokens(tokens);
-// 		free(input);
-// 	}
-// 	return (0);
+//         free_command(cmd);
+//         free_tokens(tokens);
+//     }
+//     return 0;
 // }
+
