@@ -15,6 +15,7 @@
 #include "Built-In/Env/env.h"
 #include "Built-In/Export/export.h"
 #include "Built-In/Unset/unset.h"
+#include "Libft/libft.h"
 
 static void execute_command(char **args, t_shell *shell)
 {
@@ -22,15 +23,15 @@ static void execute_command(char **args, t_shell *shell)
         builtin_exit(args);
     else if (strcmp(args[0], "pwd") == 0)
         builtin_pwd(args);
-    else if (strncmp(args[0], "echo", 5) == 0)
+    else if (ft_strncmp(args[0], "echo", 5) == 0)
         builtin_echo(args);
-    else if (strncmp(args[0], "cd", 3) == 0)
+    else if (ft_strncmp(args[0], "cd", 3) == 0)
         builtin_cd(args);
-    else if (strncmp(args[0], "env", 4) == 0)
+    else if (ft_strncmp(args[0], "env", 4) == 0)
         builtin_env(shell->env);
-    else if (strncmp(args[0], "export", 7) == 0)
+    else if (ft_strncmp(args[0], "export", 7) == 0)
         builtin_export(args, shell);
-    else if (strncmp(args[0], "unset", 6) == 0)
+    else if (ft_strncmp(args[0], "unset", 6) == 0)
         builtin_unset(args, shell);
     else
         exec_external(args, shell->env);
@@ -48,13 +49,13 @@ int main(int argc, char **argv, char **envp)
     int i;
 
     shell.env = envp;
-    shell.debug = false;
+    shell.debug = true;
 
     setup_signals();
 
     while (1)
     {
-        input = readline("born2exec$ ");
+        input = readline("Born2Exec$ ");
         if (!input)
         {
             printf("exit\n");
@@ -64,13 +65,19 @@ int main(int argc, char **argv, char **envp)
         if (*input)
             add_history(input);
 
-        tokens = lexer(input);
-        t_command *cmd = parse_tokens(tokens);
-        
+        char *quote_cleaned = clean_quotes(input);
+        if (!quote_cleaned)
+        {
+            free(input);
+            continue;
+        }
+
+        char *expanded_input = expand_variables(quote_cleaned, shell.env);
+        free(quote_cleaned);
+
+        tokens = lexer(expanded_input);
         if (shell.debug == true)
             print_token_debug(tokens);
-
-        char *expanded_input = expand_variables(input, shell.env);
 
         i = 0;
         char *token = strtok(expanded_input, " ");
@@ -87,29 +94,7 @@ int main(int argc, char **argv, char **envp)
         free_tokens(tokens);
         free(expanded_input);
         free(input);
-        free_command(cmd);
     }
+
     return 0;
 }
-
-// int main(void)
-// {
-//     char input[1024];
-    
-//     while (1)
-//     {
-//         printf("minishell> ");
-//         if (!fgets(input, sizeof(input), stdin))
-//             break;
-
-//         t_token *tokens = lexer(input);
-//         t_command *cmd = parse_tokens(tokens);
-
-//         print_command_debug(cmd);  // Test için
-
-//         free_command(cmd);
-//         free_tokens(tokens);
-//     }
-//     return 0;
-// }
-

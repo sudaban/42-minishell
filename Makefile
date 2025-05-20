@@ -18,6 +18,7 @@ SRC += \
 
 SRC += \
 	Lexer/lexer.c \
+	Lexer/token_utils.c \
 	Parser/parser.c \
 	Utils/utils.c \
 
