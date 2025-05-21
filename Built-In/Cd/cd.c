@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:23:24 by sdaban            #+#    #+#             */
-/*   Updated: 2025/05/06 16:23:25 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/05/21 18:10:07 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	builtin_cd(char **args)
 	char	*path;
 	char	*home;
 
-	if (!args[1])
+	if (!args[1] || (args[1][0] == '~' && args[1][0]))
 	{
 		home = getenv("HOME");
 		if (!home)
