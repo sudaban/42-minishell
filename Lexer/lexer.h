@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:52:55 by sdaban            #+#    #+#             */
-/*   Updated: 2025/05/20 16:52:56 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/11 17:15:24 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ typedef struct s_token
 }   t_token;
 
 t_token     *lexer(const char *input);
-void        free_tokens(t_token *tokens);
 void        print_token_debug(t_token *tokens);
-char	*clean_quotes(const char *input);
+char	    *clean_quotes(const char *input);
 #endif

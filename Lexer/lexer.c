@@ -6,18 +6,19 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:53:04 by sdaban            #+#    #+#             */
-/*   Updated: 2025/05/20 16:53:05 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/11 17:15:17 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 #include "../Libft/libft.h"
+#include "../Utils/Memory/memory.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 static t_token *create_token(t_token_type type, const char *value)
 {
-    t_token *new_token = malloc(sizeof(t_token));
+    t_token *new_token = memory_malloc(sizeof(t_token));
     if (!new_token)
         return NULL;
     new_token->type = type;
@@ -148,18 +149,6 @@ t_token *lexer(const char *input)
     }
     add_token(&tokens, create_token(T_EOF, ft_strdup("EOF")));
     return tokens;
-}
-
-void free_tokens(t_token *tokens)
-{
-    t_token *tmp;
-    while (tokens)
-    {
-        tmp = tokens;
-        tokens = tokens->next;
-        free(tmp->value);
-        free(tmp);
-    }
 }
 
 void print_token_debug(t_token *tokens)

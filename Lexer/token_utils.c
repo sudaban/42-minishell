@@ -6,13 +6,13 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:51:26 by sdaban            #+#    #+#             */
-/*   Updated: 2025/05/20 16:51:27 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/11 14:20:06 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "../Libft/libft.h"
-
+#include "../Utils/Memory/memory.h"
 char	*clean_quotes(const char *input)
 {
 	int		i;
@@ -20,7 +20,7 @@ char	*clean_quotes(const char *input)
 	char	quote;
 	char	*result;
 
-	result = malloc(ft_strlen(input) + 1);
+	result = memory_malloc(ft_strlen(input) + 1);
 	if (!result)
 		return (NULL);
 	i = 0;

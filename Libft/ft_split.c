@@ -6,12 +6,13 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:37:33 by sdaban            #+#    #+#             */
-/*   Updated: 2025/05/06 16:15:07 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/11 14:21:49 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdlib.h>
+#include "../Utils/Memory/memory.h"
 
 static	size_t	count_words(const char *str, char delimiter)
 {
@@ -77,7 +78,7 @@ char	**ft_split(char const *s, char c)
 
 	if (!s)
 		return (NULL);
-	lst = (char **)malloc((count_words(s, c) + 1) * sizeof(char *));
+	lst = (char **)memory_malloc((count_words(s, c) + 1) * sizeof(char *));
 	if (!lst || !fill_word_list(lst, s, c))
 		return (NULL);
 	return (lst);

@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free_double_ptr.c                               :+:      :+:    :+:   */
+/*   memory.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/06 12:39:41 by sdaban            #+#    #+#             */
-/*   Updated: 2025/05/06 16:15:00 by sdaban           ###   ########.fr       */
+/*   Created: 2025/06/11 13:46:49 by sdaban            #+#    #+#             */
+/*   Updated: 2025/06/11 14:21:27 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#ifndef MEMORY_H
+#define MEMORY_H
 
-void	ft_free_double_ptr(char **str)
-{
-	int	i;
+#include <stddef.h>
+typedef struct s_memory {
+    void			*ptr;
+    struct s_memory	*next;
+}	t_memory;
 
-	i = 0;
-	if (!str)
-		return ;
-	while (str[i])
-		i++;
-	while (--i >= 0)
-	{
-		if (str[i])
-			free(str[i]);
-	}
-	free(str);
-}
+
+void	*memory_malloc(size_t size);
+void	memory_free(void *ptr);
+void	memory_cleanup();
+
+#endif

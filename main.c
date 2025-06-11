@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/10 15:31:10 by sdaban            #+#    #+#             */
+/*   Updated: 2025/06/11 17:24:54 by sdaban           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <readline/readline.h>
@@ -16,8 +28,9 @@
 #include "Built-In/Export/export.h"
 #include "Built-In/Unset/unset.h"
 #include "Libft/libft.h"
+#include "Utils/Memory/memory.h"
 
-static void execute_command(char **args, t_shell *shell)
+static void	execute_command(char **args, t_shell *shell)
 {
     if (strcmp(args[0], "exit") == 0)
         builtin_exit(args);
@@ -55,7 +68,7 @@ int main(int argc, char **argv, char **envp)
 
     while (1)
     {
-        input = readline("Born2Exec$ ");
+        input = readline("Born2Exec$ "); // Add to memory list
         if (!input)
         {
             printf("exit\n");
@@ -68,12 +81,12 @@ int main(int argc, char **argv, char **envp)
         char *quote_cleaned = clean_quotes(input);
         if (!quote_cleaned)
         {
-            free(input);
+            memory_free(input);
             continue;
         }
 
         char *expanded_input = expand_variables(quote_cleaned, shell.env);
-        free(quote_cleaned);
+        memory_free(quote_cleaned);
 
         tokens = lexer(expanded_input);
         if (shell.debug == true)
@@ -91,10 +104,15 @@ int main(int argc, char **argv, char **envp)
         if (args[0])
             execute_command(args, &shell);
 
-        free_tokens(tokens);
-        free(expanded_input);
+        memory_free(tokens);
+        memory_free(expanded_input);
         free(input);
     }
+    rl_cleanup_after_signal();
+    rl_clear_history();
+    memory_cleanup();
 
+    // TO DO : env memory checking hsamir
+    // ADD Input to memory list
     return 0;
 }

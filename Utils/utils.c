@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 13:35:12 by sdaban            #+#    #+#             */
-/*   Updated: 2025/05/09 13:58:05 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/11 17:21:16 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <sys/wait.h>
-
+#include "Memory/memory.h"
 #include "../minishell.h"
 #include "../Libft/libft.h"
 
@@ -58,7 +58,7 @@ char	*expand_variables(const char *input, char **env)
 	int		j;
 	int		k;
 
-	result = malloc(4096);
+	result = memory_malloc(4096);
 	if (!result)
 		return (NULL);
 	i = 0;
@@ -102,12 +102,10 @@ char	*find_executable(char *cmd, char **env)
 		if (access(full_path, X_OK) == 0)
 		{
 			ret = ft_strdup(full_path);
-			ft_free_double_ptr(dirs);
 			return (ret);
 		}
 		i++;
 	}
-	ft_free_double_ptr(dirs);
 	return (NULL);
 }
 
@@ -127,7 +125,7 @@ void	exec_external(char **args, char **env)
 		}
 		execve(cmd_path, args, env);
 		perror("execve");
-		exit(1);
+		memory_cleanup();
 	}
 	else if (pid > 0)
 		waitpid(pid, NULL, 0);

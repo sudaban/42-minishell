@@ -6,12 +6,13 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:23:54 by sdaban            #+#    #+#             */
-/*   Updated: 2025/05/06 16:23:55 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/11 17:15:03 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "unset.h"
 #include <stdlib.h>
+#include "../../Utils/Memory/memory.h"
 
 static int	match_key(char *entry, char *key)
 {
@@ -35,7 +36,7 @@ static char	**remove_env_var(char **env, char *key)
 	count = 0;
 	while (env[count])
 		count++;
-	new_env = malloc(sizeof(char *) * count);
+	new_env = memory_malloc(sizeof(char *) * count);
 	if (!new_env)
 		return (NULL);
 	i = 0;
@@ -43,7 +44,7 @@ static char	**remove_env_var(char **env, char *key)
 	while (env[i])
 	{
 		if (match_key(env[i], key))
-			free(env[i]);
+			memory_free(env[i]); // check env free
 		else
 			new_env[j++] = env[i];
 		i++;
