@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 13:35:12 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/11 17:21:16 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/12 17:43:31 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*expand_variables(const char *input, char **env)
 	int		j;
 	int		k;
 
-	result = memory_malloc(4096);
+	result = memory_malloc(4096); // NOLUR SIZE HESAPLA
 	if (!result)
 		return (NULL);
 	i = 0;
