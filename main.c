@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 15:31:10 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/11 17:24:54 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/12 14:31:44 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,13 @@ int main(int argc, char **argv, char **envp)
         memory_free(quote_cleaned);
 
         tokens = lexer(expanded_input);
+        t_ast_node *ast = parse_tokens(tokens);
         if (shell.debug == true)
+        {
             print_token_debug(tokens);
+            printf("--------------------------------------------------\n");
+            print_ast_debug(ast);   
+        }
 
         i = 0;
         char *token = strtok(expanded_input, " ");
@@ -106,6 +111,7 @@ int main(int argc, char **argv, char **envp)
 
         memory_free(tokens);
         memory_free(expanded_input);
+        memory_free(ast);
         free(input);
     }
     rl_cleanup_after_signal();
