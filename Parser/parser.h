@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:35:38 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/12 14:23:24 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/16 17:15:25 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,5 @@ typedef struct s_ast_node
 
 t_ast_node	*parse_tokens(t_token *tokens);
 void		print_ast_debug(t_ast_node *ast);
-void		free_ast(t_ast_node *ast);
 
 #endif

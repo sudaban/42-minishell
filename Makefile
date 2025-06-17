@@ -22,6 +22,9 @@ SRC += \
 	Parser/parser.c \
 	Utils/utils.c \
 	Utils/Memory/memory.c \
+	Utils/Redirections/redirection.c \
+	Utils/Status/status.c \
+	Executor/executor.c
 
 SRC += \
 	Libft/ft_strlen.c \
@@ -33,7 +36,9 @@ SRC += \
 	Libft/ft_strdup.c \
 	Libft/ft_memcpy.c \
 	Libft/ft_isspace.c \
-	Libft/ft_isalnum.c
+	Libft/ft_isalnum.c \
+	Libft/ft_strtok.c \
+	Libft/ft_itoa.c
 
 
 OBJ = $(SRC:.c=.o)
