@@ -24,7 +24,8 @@ SRC += \
 	Utils/Memory/memory.c \
 	Utils/Redirections/redirection.c \
 	Utils/Status/status.c \
-	Executor/executor.c
+	Executor/executor.c \
+	Executor/pipe.c
 
 SRC += \
 	Libft/ft_strlen.c \
