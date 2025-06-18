@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 13:46:02 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/17 13:46:26 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/18 12:39:29 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,6 @@
 # include <fcntl.h>
 # include <unistd.h>
 
-void	handle_redirections(t_redirection *redir);
+int	handle_redirections(t_redirection *redir);
 
 #endif

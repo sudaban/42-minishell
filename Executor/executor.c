@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 13:41:40 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/17 13:51:49 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/18 12:50:12 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,13 @@
 #include "../Built-In/Unset/unset.h"
 #include "../Libft/libft.h"
 #include "../Utils/Redirections/redirection.h"
+#include "../Utils/Status/status.h"
 #include <unistd.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-static void	execute_command(char **args, t_shell *shell)
+void	execute_command(char **args, t_shell *shell)
 {
     if (ft_strncmp(args[0], "exit", 5) == 0)
         builtin_exit(args);
@@ -47,13 +48,26 @@ static void	execute_command(char **args, t_shell *shell)
 
 void	execute_ast(t_ast_node *ast, t_shell *shell)
 {
-	while (ast)
+	if (!ast)
+		return;
+
+	if (ast->next_pipe)
+	{
+		execute_pipeline(ast, shell);
+	}
+	else
 	{
 		int	stdin_backup = dup(0);
 		int	stdout_backup = dup(1);
 
 		if (ast->redirections)
-			handle_redirections(ast->redirections);
+		{
+			if (handle_redirections(ast->redirections) != 0)
+			{
+				set_exit_status(1);
+				return;
+			}
+		}
 
 		execute_command(ast->args, shell);
 
@@ -61,7 +75,5 @@ void	execute_ast(t_ast_node *ast, t_shell *shell)
 		dup2(stdout_backup, 1);
 		close(stdin_backup);
 		close(stdout_backup);
-
-		ast = ast->next_pipe;
 	}
 }
