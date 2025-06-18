@@ -5,12 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/17 13:41:40 by sdaban            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/06/18 14:18:47 by itaskira         ###   ########.fr       */
-=======
-/*   Updated: 2025/06/18 12:50:12 by sdaban           ###   ########.fr       */
->>>>>>> 3e499a59db7651945e676177aab591ce37ace637
+/*   Created: 2025/06/18 15:50:47 by itaskira          #+#    #+#             */
+/*   Updated: 2025/06/18 15:53:39 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +19,8 @@
 #include "../Built-In/Unset/unset.h"
 #include "../Libft/libft.h"
 #include "../Utils/Redirections/redirection.h"
-<<<<<<< HEAD
-#include "executor.h"
-=======
 #include "../Utils/Status/status.h"
-#include <unistd.h>
-#include <string.h>
->>>>>>> 3e499a59db7651945e676177aab591ce37ace637
+#include "executor.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -57,45 +48,34 @@ void	execute_command(char **args, t_shell *shell)
 
 void	execute_ast(t_ast_node *ast, t_shell *shell)
 {
-<<<<<<< HEAD
 	int	stdin_backup;
 	int	stdout_backup;
 
 	while (ast)
-=======
-	if (!ast)
-		return;
-
+		if (!ast)
+			return ;
 	if (ast->next_pipe)
 	{
 		execute_pipeline(ast, shell);
 	}
 	else
->>>>>>> 3e499a59db7651945e676177aab591ce37ace637
 	{
 		stdin_backup = dup(0);
 		stdout_backup = dup(1);
 		if (ast->redirections)
-<<<<<<< HEAD
 			handle_redirections(ast->redirections);
-=======
 		{
 			if (handle_redirections(ast->redirections) != 0)
 			{
 				set_exit_status(1);
-				return;
+				return ;
 			}
 		}
-
->>>>>>> 3e499a59db7651945e676177aab591ce37ace637
 		execute_command(ast->args, shell);
 		dup2(stdin_backup, 0);
 		dup2(stdout_backup, 1);
 		close(stdin_backup);
 		close(stdout_backup);
-<<<<<<< HEAD
 		ast = ast->next_pipe;
-=======
->>>>>>> 3e499a59db7651945e676177aab591ce37ace637
 	}
 }

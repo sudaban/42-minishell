@@ -6,7 +6,7 @@
 /*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 15:31:10 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/18 14:19:22 by itaskira         ###   ########.fr       */
+/*   Updated: 2025/06/18 15:56:41 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	shell.env = envp;
-	shell.debug = false;
+	shell.debug = true;
 	setup_signals();
 	while (1)
 	{

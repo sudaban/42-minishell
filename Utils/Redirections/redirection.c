@@ -5,17 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/17 13:46:04 by sdaban            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/06/18 14:24:58 by itaskira         ###   ########.fr       */
-=======
-/*   Updated: 2025/06/18 12:40:12 by sdaban           ###   ########.fr       */
->>>>>>> 3e499a59db7651945e676177aab591ce37ace637
+/*   Created: 2025/06/18 15:51:35 by itaskira          #+#    #+#             */
+/*   Updated: 2025/06/18 15:58:30 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "redirection.h"
 #include "../Status/status.h"
+#include "redirection.h"
 #include <stdio.h>
 
 int	handle_redirections(t_redirection *redir)
@@ -33,10 +29,6 @@ int	handle_redirections(t_redirection *redir)
 			fd = open(redir->filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
 		else if (redir->type == T_HEREDOC)
 		{
-<<<<<<< HEAD
-=======
-			// here will be heredoc
->>>>>>> 3e499a59db7651945e676177aab591ce37ace637
 			redir = redir->next;
 			continue ;
 		}
@@ -55,4 +47,3 @@ int	handle_redirections(t_redirection *redir)
 	}
 	return (0);
 }
-
