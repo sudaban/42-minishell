@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:23:45 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/18 14:18:27 by itaskira         ###   ########.fr       */
+/*   Updated: 2025/05/06 16:23:46 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../Libft/libft.h"
-#include "../../minishell.h"
 #include "export.h"
-#include <stdio.h>
 #include <unistd.h>
+#include <stdio.h>
+#include "../../minishell.h"
+#include "../../Libft/libft.h"
 
 static int	builtin_export_no_args(t_shell *shell)
 {

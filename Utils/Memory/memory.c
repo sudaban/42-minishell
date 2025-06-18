@@ -3,20 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   memory.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:46:47 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/18 14:19:10 by itaskira         ###   ########.fr       */
+/*   Updated: 2025/06/11 14:21:23 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "memory.h"
 #include <stdlib.h>
 
-static t_memory	**get_mem_list(void)
+static t_memory	**get_mem_list()
 {
-	static t_memory	*mem_list = NULL;
-
+	static t_memory *mem_list = NULL;
 	return (&mem_list);
 }
 
@@ -42,42 +41,38 @@ void	*memory_malloc(size_t size)
 
 void	memory_free(void *ptr)
 {
-	t_memory	**head;
-	t_memory	*prev;
-	t_memory	*cur;
+	t_memory  **head = get_mem_list();
+	t_memory  *prev = NULL;
+	t_memory  *cur = *head;
 
-	head = get_mem_list();
-	prev = NULL;
-	cur = *head;
 	while (cur)
 	{
 		if (cur->ptr == ptr)
 		{
-			if (prev)
-				prev->next = cur->next;
-			else
-				*head = cur->next;
-			free(cur->ptr);
-			free(cur);
-			return ;
-		}
-		prev = cur;
-		cur = cur->next;
-	}
+            if (prev)
+                prev->next = cur->next;
+            else
+                *head = cur->next;
+            free(cur->ptr);
+            free(cur);
+            return;
+        }
+        prev = cur;
+        cur = cur->next;
+    }
 }
 
-void	memory_cleanup(void)
+void    memory_cleanup()
 {
-	t_memory	*tmp;
-	t_memory	**head;
+    t_memory  *tmp;
+    t_memory  **head = get_mem_list();
 
-	head = get_mem_list();
-	while (*head)
-	{
-		tmp = *head;
-		*head = (*head)->next;
-		free(tmp->ptr);
-		free(tmp);
-	}
+    while (*head)
+    {
+        tmp = *head;
+        *head = (*head)->next;
+        free(tmp->ptr);
+        free(tmp);
+    }
 	exit(0);
 }

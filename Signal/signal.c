@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:16:09 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/18 14:19:05 by itaskira         ###   ########.fr       */
+/*   Updated: 2025/05/06 16:24:50 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <readline/history.h>
-#include <readline/readline.h>
 #include <signal.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 #include <unistd.h>
 
 void	handle_sigint(int sig)

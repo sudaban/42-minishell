@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:23:27 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/18 14:18:06 by itaskira         ###   ########.fr       */
+/*   Updated: 2025/05/06 16:23:28 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../Libft/libft.h"
 #include <unistd.h>
+#include "../../Libft/libft.h"
+#include "../../Libft/libft.h"
 
 int	is_n_flag(char *arg)
 {

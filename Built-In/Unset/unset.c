@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:23:54 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/18 14:22:18 by itaskira         ###   ########.fr       */
+/*   Updated: 2025/06/11 17:15:03 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../Utils/Memory/memory.h"
 #include "unset.h"
 #include <stdlib.h>
+#include "../../Utils/Memory/memory.h"
 
 static int	match_key(char *entry, char *key)
 {
@@ -44,7 +44,7 @@ static char	**remove_env_var(char **env, char *key)
 	while (env[i])
 	{
 		if (match_key(env[i], key))
-			memory_free(env[i]);
+			memory_free(env[i]); // check env free
 		else
 			new_env[j++] = env[i];
 		i++;

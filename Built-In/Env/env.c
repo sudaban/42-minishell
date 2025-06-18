@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:23:32 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/18 14:18:10 by itaskira         ###   ########.fr       */
+/*   Updated: 2025/05/06 16:23:33 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../Libft/libft.h"
 #include <unistd.h>
+#include "../../Libft/libft.h"
 
 int	builtin_env(char **envp)
 {

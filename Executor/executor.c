@@ -3,79 +3,77 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/18 15:50:47 by itaskira          #+#    #+#             */
-/*   Updated: 2025/06/18 15:53:39 by itaskira         ###   ########.fr       */
+/*   Created: 2025/06/17 13:41:40 by sdaban            #+#    #+#             */
+/*   Updated: 2025/06/18 12:50:12 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../Built-In/Cd/cd.h"
-#include "../Built-In/Echo/echo.h"
-#include "../Built-In/Env/env.h"
+#include "executor.h"
 #include "../Built-In/Exit/exit.h"
-#include "../Built-In/Export/export.h"
 #include "../Built-In/Pwd/pwd.h"
+#include "../Built-In/Echo/echo.h"
+#include "../Built-In/Cd/cd.h"
+#include "../Built-In/Env/env.h"
+#include "../Built-In/Export/export.h"
 #include "../Built-In/Unset/unset.h"
 #include "../Libft/libft.h"
 #include "../Utils/Redirections/redirection.h"
 #include "../Utils/Status/status.h"
-#include "executor.h"
+#include <unistd.h>
+#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
 
 void	execute_command(char **args, t_shell *shell)
 {
-	if (ft_strncmp(args[0], "exit", 5) == 0)
-		builtin_exit(args);
-	else if (ft_strncmp(args[0], "pwd", 4) == 0)
-		builtin_pwd(args);
-	else if (ft_strncmp(args[0], "echo", 5) == 0)
-		builtin_echo(args);
-	else if (ft_strncmp(args[0], "cd", 3) == 0)
-		builtin_cd(args);
-	else if (ft_strncmp(args[0], "env", 4) == 0)
-		builtin_env(shell->env);
-	else if (ft_strncmp(args[0], "export", 7) == 0)
-		builtin_export(args, shell);
-	else if (ft_strncmp(args[0], "unset", 6) == 0)
-		builtin_unset(args, shell);
-	else
-		exec_external(args, shell->env);
+    if (ft_strncmp(args[0], "exit", 5) == 0)
+        builtin_exit(args);
+    else if (ft_strncmp(args[0], "pwd", 4) == 0)
+        builtin_pwd(args);
+    else if (ft_strncmp(args[0], "echo", 5) == 0)
+        builtin_echo(args);
+    else if (ft_strncmp(args[0], "cd", 3) == 0)
+        builtin_cd(args);
+    else if (ft_strncmp(args[0], "env", 4) == 0)
+        builtin_env(shell->env);
+    else if (ft_strncmp(args[0], "export", 7) == 0)
+        builtin_export(args, shell);
+    else if (ft_strncmp(args[0], "unset", 6) == 0)
+        builtin_unset(args, shell);
+    else
+        exec_external(args, shell->env);
 }
 
 void	execute_ast(t_ast_node *ast, t_shell *shell)
 {
-	int	stdin_backup;
-	int	stdout_backup;
+	if (!ast)
+		return;
 
-	while (ast)
-		if (!ast)
-			return ;
 	if (ast->next_pipe)
 	{
 		execute_pipeline(ast, shell);
 	}
 	else
 	{
-		stdin_backup = dup(0);
-		stdout_backup = dup(1);
+		int	stdin_backup = dup(0);
+		int	stdout_backup = dup(1);
+
 		if (ast->redirections)
-			handle_redirections(ast->redirections);
 		{
 			if (handle_redirections(ast->redirections) != 0)
 			{
 				set_exit_status(1);
-				return ;
+				return;
 			}
 		}
+
 		execute_command(ast->args, shell);
+
 		dup2(stdin_backup, 0);
 		dup2(stdout_backup, 1);
 		close(stdin_backup);
 		close(stdout_backup);
-		ast = ast->next_pipe;
 	}
 }
