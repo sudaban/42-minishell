@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:23:43 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/11 17:10:13 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/18 13:56:04 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "export.h"
 #include "../../Libft/libft.h"
 #include "../../Utils/Memory/memory.h"
+#include "export.h"
+#include <stdlib.h>
+
 int	is_valid_key(char *arg)
 {
 	int	i;
@@ -25,8 +26,8 @@ int	is_valid_key(char *arg)
 	while (arg[i] && arg[i] != '=')
 	{
 		if (!(arg[i] == '_' || (arg[i] >= 'A' && arg[i] <= 'Z')
-				|| (arg[i] >= 'a' && arg[i] <= 'z')
-				|| (arg[i] >= '0' && arg[i] <= '9')))
+				|| (arg[i] >= 'a' && arg[i] <= 'z') || (arg[i] >= '0'
+					&& arg[i] <= '9')))
 			return (0);
 		i++;
 	}
@@ -49,9 +50,20 @@ static int	key_match(char *env_entry, char *new_entry)
 
 int	replace_env(char *new_entry, char ***env)
 {
-	int	i;
+	int		i;
+	char	*value_control;
 
 	i = 0;
+	value_control = ft_strchr(new_entry, '=');
+	if (!value_control)
+	{
+		while ((*env)[i])
+		{
+			if (key_match((*env)[i++], new_entry))
+				return (1);
+		}
+		return (0);
+	}
 	while ((*env)[i])
 	{
 		if (key_match((*env)[i], new_entry))
