@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 13:35:12 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/18 16:51:00 by itaskira         ###   ########.fr       */
+/*   Updated: 2025/06/18 16:53:43 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,7 @@ char	*find_executable(char *cmd, char **env)
 	}
 	return (NULL);
 }
+
 static char	*get_cmd_path(char *cmd, char **env)
 {
 	if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/'))
@@ -171,6 +172,7 @@ static char	*get_cmd_path(char *cmd, char **env)
 	}
 	return (find_executable(cmd, env));
 }
+
 void	exec_external(char **args, char **env)
 {
 	pid_t	pid;
