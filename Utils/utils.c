@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 13:35:12 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/17 16:59:00 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/18 14:44:38 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <sys/wait.h>
-#include "Memory/memory.h"
-#include "../minishell.h"
 #include "../Libft/libft.h"
 #include "../Utils/Status/status.h"
+#include "../minishell.h"
+#include "Memory/memory.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 char	*get_env_value(const char *key, char **env)
 {
@@ -136,7 +136,6 @@ char	*expand_variables(const char *input, char **env)
 	return (result);
 }
 
-
 char	*find_executable(char *cmd, char **env)
 {
 	char	*path;
@@ -163,6 +162,17 @@ char	*find_executable(char *cmd, char **env)
 	return (NULL);
 }
 
+static char	*get_cmd_path(char *cmd, char **env)
+{
+	if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/'))
+	{
+		if (access(cmd, X_OK) == 0)
+			return (ft_strdup(cmd));
+		return (NULL);
+	}
+	return (find_executable(cmd, env));
+}
+
 void	exec_external(char **args, char **env)
 {
 	pid_t	pid;
@@ -172,15 +182,15 @@ void	exec_external(char **args, char **env)
 	pid = fork();
 	if (pid == 0)
 	{
-		cmd_path = find_executable(args[0], env);
+		cmd_path = get_cmd_path(args[0], env);
 		if (!cmd_path)
 		{
 			fprintf(stderr, "Command not found: %s\n", args[0]);
-			exit(127); // main process will set status
+			exit(127);
 		}
 		execve(cmd_path, args, env);
 		perror("execve");
-		memory_cleanup(); // if failed
+		memory_cleanup();
 	}
 	else if (pid > 0)
 	{
@@ -188,7 +198,7 @@ void	exec_external(char **args, char **env)
 		if (WIFEXITED(status))
 			set_exit_status(WEXITSTATUS(status));
 		else
-			set_exit_status(1); // if signal
+			set_exit_status(1);
 	}
 	else
 	{

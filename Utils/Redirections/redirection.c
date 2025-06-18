@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 13:46:04 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/17 13:53:45 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/18 14:24:58 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,11 @@
 
 void	handle_redirections(t_redirection *redir)
 {
+	int	fd;
+
 	while (redir)
 	{
-		int	fd = -1;
-
+		fd = -1;
 		if (redir->type == T_REDIRECT_IN)
 			fd = open(redir->filename, O_RDONLY);
 		else if (redir->type == T_REDIRECT_OUT)
@@ -27,22 +28,18 @@ void	handle_redirections(t_redirection *redir)
 			fd = open(redir->filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
 		else if (redir->type == T_HEREDOC)
 		{
-			// skip until heredoc implementation
 			redir = redir->next;
-			continue;
+			continue ;
 		}
-
 		if (fd == -1)
 		{
 			perror("redirection");
 			return ;
 		}
-
 		if (redir->type == T_REDIRECT_IN)
 			dup2(fd, STDIN_FILENO);
 		else
 			dup2(fd, STDOUT_FILENO);
-
 		close(fd);
 		redir = redir->next;
 	}

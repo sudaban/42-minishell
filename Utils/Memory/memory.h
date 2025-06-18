@@ -3,25 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   memory.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:46:49 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/11 14:21:27 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/18 14:21:14 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MEMORY_H
-#define MEMORY_H
+# define MEMORY_H
 
-#include <stddef.h>
-typedef struct s_memory {
-    void			*ptr;
-    struct s_memory	*next;
-}	t_memory;
+# include <stddef.h>
 
+typedef struct s_memory
+{
+	void			*ptr;
+	struct s_memory	*next;
+}					t_memory;
 
-void	*memory_malloc(size_t size);
-void	memory_free(void *ptr);
-void	memory_cleanup();
+void				*memory_malloc(size_t size);
+void				memory_free(void *ptr);
+void				memory_cleanup(void);
 
 #endif
