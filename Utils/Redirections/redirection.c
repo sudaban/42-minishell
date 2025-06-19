@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 13:46:04 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/18 17:41:38 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/19 13:56:14 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,14 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <readline/readline.h>
+#include <stdbool.h>
+#include "../../minishell.h"
 
-static int	handle_heredoc(const char *delimiter)
+static int	handle_heredoc(const char *delimiter, bool expand, char **env)
 {
 	int		pipefd[2];
 	char	*line;
+	char	*expanded;
 
 	if (pipe(pipefd) == -1)
 	{
@@ -39,26 +42,43 @@ static int	handle_heredoc(const char *delimiter)
 			free(line);
 			break;
 		}
-		write(pipefd[1], line, ft_strlen(line));
+		if (expand)
+			expanded = expand_variables(line, env);
+		else
+			expanded = ft_strdup(line);
+		write(pipefd[1], expanded, ft_strlen(expanded));
 		write(pipefd[1], "\n", 1);
 		free(line);
+		free(expanded);
 	}
 	close(pipefd[1]);
 	return (pipefd[0]);
 }
 
-// FIX HEREDOC!!!! causes segfault while same delimiter
 
-int	handle_redirections(t_redirection *redir)
+int	handle_redirections(t_redirection *redir, char **env)
 {
 	int	fd;
 
 	while (redir)
 	{
 		fd = -1;
-
 		if (redir->type == T_HEREDOC)
-			fd = handle_heredoc(redir->filename);
+		{
+			bool quoted = false;
+			char *delim = redir->filename;
+
+			if ((delim[0] == '\'' || delim[0] == '"') &&
+				delim[ft_strlen(delim) - 1] == delim[0])
+			{
+				quoted = true;
+				delim = ft_substr(delim, 1, ft_strlen(delim) - 2);
+			}
+
+			fd = handle_heredoc(delim, !quoted, env);
+			if (quoted)
+				free(delim);
+		}
 		else if (redir->type == T_REDIRECT_IN)
 			fd = open(redir->filename, O_RDONLY);
 		else if (redir->type == T_REDIRECT_OUT)

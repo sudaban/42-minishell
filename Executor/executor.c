@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 13:41:40 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/18 17:39:47 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/19 13:55:25 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,22 @@ void	execute_ast(t_ast_node *ast, t_shell *shell)
 
 		if (ast->redirections)
 		{
-			if (handle_redirections(ast->redirections) != 0)
+			if (handle_redirections(ast->redirections, shell->env) != 0)
 			{
 				set_exit_status(1);
 				return;
 			}
 		}
-
+		
+		if (!ast->args || !ast->args[0])
+		{
+			dup2(stdin_backup, 0);
+			dup2(stdout_backup, 1);
+			close(stdin_backup);
+			close(stdout_backup);
+			set_exit_status(0);
+			return;
+		}
 		execute_command(ast->args, shell);
 
 		dup2(stdin_backup, 0);
