@@ -6,14 +6,16 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:51:26 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/11 14:20:06 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/20 14:59:24 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "../Libft/libft.h"
 #include "../Utils/Memory/memory.h"
-char	*clean_quotes(const char *input)
+#include "../minishell.h"
+
+char	*clean_quotes(const char *input, t_shell* shell)
 {
 	int		i;
 	int		j;
@@ -29,7 +31,10 @@ char	*clean_quotes(const char *input)
 	while (input[i])
 	{
 		if ((input[i] == '\'' || input[i] == '"') && quote == 0)
+		{
+			if (input[i] == '\'') shell->should_expand = false;
 			quote = input[i++];
+		}
 		else if (input[i] == quote)
 		{
 			quote = 0;

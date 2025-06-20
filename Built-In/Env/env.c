@@ -6,12 +6,13 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:23:32 by sdaban            #+#    #+#             */
-/*   Updated: 2025/05/06 16:23:33 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/20 16:08:32 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include "../../Libft/libft.h"
+#include "../../Utils/Status/status.h"
 
 int	builtin_env(char **envp)
 {
@@ -27,5 +28,6 @@ int	builtin_env(char **envp)
 		}
 		i++;
 	}
+	set_exit_status(0);
 	return (0);
 }

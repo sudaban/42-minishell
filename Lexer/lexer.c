@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:53:04 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/11 17:15:17 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/20 15:49:22 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,114 +42,107 @@ static void add_token(t_token **head, t_token *new_token)
     }
 }
 
-t_token *lexer(const char *input)
+t_token	*lexer(const char *input)
 {
-    t_token *tokens = NULL;
-    int i = 0;
+	t_token	*tokens = NULL;
+	int		i = 0;
 
-    while (input[i])
-    {
-        if (ft_isspace(input[i]))
-        {
-            i++;
-            continue;
-        }
-        else if (input[i] == '"')
-        {
-            i++;
-            int start = i;
-            while (input[i] && input[i] != '"')
-                i++;
-            if (input[i] == '"')
-                add_token(&tokens, create_token(T_DOUBLE_QUOTE, ft_substr(input, start, i - start)));
-            i++;
-        }
-        else if (input[i] == '\'')
-        {
-            i++;
-            int start = i;
-            while (input[i] && input[i] != '\'')
-                i++;
-            if (input[i] == '\'')
-                add_token(&tokens, create_token(T_SINGLE_QUOTE, ft_substr(input, start, i - start)));
-            i++;
-        }
-        else if (input[i] == '|')
-        {
-            if (input[i + 1] == '|')
-            {
-                add_token(&tokens, create_token(T_OR, "||"));
-                i += 2;
-            }
-            else
-            {
-                add_token(&tokens, create_token(T_PIPE, "|"));
-                i++;
-            }
-        }
-        else if (input[i] == '<')
-        {
-            if (input[i + 1] == '<')
-            {
-                add_token(&tokens, create_token(T_HEREDOC, "<<"));
-                i += 2;
-            }
-            else
-            {
-                add_token(&tokens, create_token(T_REDIRECT_IN, "<"));
-                i++;
-            }
-        }
-        else if (input[i] == '>')
-        {
-            if (input[i + 1] == '>')
-            {
-                add_token(&tokens, create_token(T_APPEND_OUT, ">>"));
-                i += 2;
-            }
-            else
-            {
-                add_token(&tokens, create_token(T_REDIRECT_OUT, ">"));
-                i++;
-            }
-        }
-        else if (input[i] == '$')
-        {
-            i++;
-            int start = i;
-            while (ft_isalnum(input[i]) || input[i] == '_')
-                i++;
-            if (i > start)
-                add_token(&tokens, create_token(T_ENV_VAR, ft_substr(input, start, i - start)));
-            else
-                add_token(&tokens, create_token(T_WORD, "$")); // Tek başına $ işareti
-        }
-        else if (input[i] == '&')
-        {
-            if (input[i + 1] == '&')
-            {
-                add_token(&tokens, create_token(T_AND, "&&"));
-                i += 2;
-            }
-            else
-            {
-                add_token(&tokens, create_token(T_AMPERSAND, "&"));
-                i++;
-            }
-        }
-        else
-        {
-            int start = i;
-            while (input[i] && !ft_isspace(input[i]) && input[i] != '"' && input[i] != '\'' &&
-                   input[i] != '|' && input[i] != '<' && input[i] != '>' && input[i] != '$' &&
-                   input[i] != '&' && !(input[i] == '|' && input[i + 1] == '|') && !(input[i] == '&' && input[i + 1] == '&'))
-                i++;
-            add_token(&tokens, create_token(T_WORD, ft_substr(input, start, i - start)));
-        }
-    }
-    add_token(&tokens, create_token(T_EOF, ft_strdup("EOF")));
-    return tokens;
+	while (input[i])
+	{
+		if (ft_isspace(input[i]))
+			i++;
+		else if (input[i] == '\'' || input[i] == '"')
+		{
+			char quote = input[i++];
+			int start = i;
+			while (input[i] && input[i] != quote)
+				i++;
+			if (input[i] == quote)
+				add_token(&tokens, create_token(T_WORD, ft_substr(input, start, i - start)));
+			if (input[i]) 
+				i++;
+		}
+		else if (input[i] == '|')
+		{
+			if (input[i + 1] == '|')
+			{
+				add_token(&tokens, create_token(T_OR, "||"));
+				i += 2;
+			}
+			else
+			{
+				add_token(&tokens, create_token(T_PIPE, "|"));
+				i++;
+			}
+		}
+		else if (input[i] == '<')
+		{
+			if (input[i + 1] == '<')
+			{
+				add_token(&tokens, create_token(T_HEREDOC, "<<"));
+				i += 2;
+			}
+			else
+			{
+				add_token(&tokens, create_token(T_REDIRECT_IN, "<"));
+				i++;
+			}
+		}
+		else if (input[i] == '>')
+		{
+			if (input[i + 1] == '>')
+			{
+				add_token(&tokens, create_token(T_APPEND_OUT, ">>"));
+				i += 2;
+			}
+			else
+			{
+				add_token(&tokens, create_token(T_REDIRECT_OUT, ">"));
+				i++;
+			}
+		}
+		else if (input[i] == '$')
+		{
+			i++;
+			int start = i;
+			while (ft_isalnum(input[i]) || input[i] == '_')
+				i++;
+			if (i > start)
+				add_token(&tokens, create_token(T_ENV_VAR, ft_substr(input, start, i - start)));
+			else
+				add_token(&tokens, create_token(T_WORD, "$"));
+		}
+		else if (input[i] == '&')
+		{
+			if (input[i + 1] == '&')
+			{
+				add_token(&tokens, create_token(T_AND, "&&"));
+				i += 2;
+			}
+			else
+			{
+				add_token(&tokens, create_token(T_AMPERSAND, "&"));
+				i++;
+			}
+		}
+		else
+		{
+			int start = i;
+			while (input[i] && !ft_isspace(input[i]) &&
+				input[i] != '"' && input[i] != '\'' &&
+				input[i] != '|' && input[i] != '<' &&
+				input[i] != '>' && input[i] != '$' &&
+				input[i] != '&')
+			{
+				i++;
+			}
+			add_token(&tokens, create_token(T_WORD, ft_substr(input, start, i - start)));
+		}
+	}
+	add_token(&tokens, create_token(T_EOF, ft_strdup("EOF")));
+	return (tokens);
 }
+
 
 void print_token_debug(t_token *tokens)
 {

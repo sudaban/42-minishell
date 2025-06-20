@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 15:31:10 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/18 12:45:06 by itaskira         ###   ########.fr       */
+/*   Updated: 2025/06/20 16:29:48 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "Utils/Status/status.h"
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -42,25 +43,32 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	shell.env = envp;
-	shell.debug = false;
+	shell.debug = true;
 	setup_signals();
 	while (1)
 	{
 		input = readline("Born2Exec$ ");
+		shell.should_expand = true;
 		if (!input)
 		{
 			printf("exit\n");
 			break ;
 		}
+		if (!check_syntax(input))
+		{
+			set_exit_status(2);
+			free(input);
+			continue ;
+		}
 		if (*input)
 			add_history(input);
-		quote_cleaned = clean_quotes(input);
+		quote_cleaned = clean_quotes(input, &shell);
 		if (!quote_cleaned)
 		{
 			memory_free(input);
 			continue ;
 		}
-		expanded_input = expand_variables(quote_cleaned, shell.env);
+		expanded_input = expand_variables(quote_cleaned, &shell);
 		memory_free(quote_cleaned);
 		tokens = lexer(expanded_input);
 		ast = parse_tokens(tokens);
@@ -84,7 +92,9 @@ int	main(int argc, char **argv, char **envp)
 
 // TO DO : env memory checking hsamir
 // ADD Input to memory list
-// TO DO echo should print input if '' instead of "" (REWRITE WHOLE QUOTE HANDLING)
-// TO DO export should not change value if there is no equal sign (=) ex: export hi= (should not change) export hi (should not change) export hi="val" $hi = val
-// TO DO tokenize input before expander
-// SYNTAX CONTROL
+
+/*
+strace -e execve ls
+file name should be alphabetic or numeric after redirection
+export should not seperate values if there is a space
+*/

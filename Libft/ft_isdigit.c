@@ -1,28 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/06 16:23:49 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/20 16:08:55 by sdaban           ###   ########.fr       */
+/*   Created: 2025/06/20 16:20:17 by sdaban            #+#    #+#             */
+/*   Updated: 2025/06/20 16:20:21 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
-#include "../../Utils/Status/status.h"
-
-int	builtin_pwd(char **args)
+int	ft_isdigit(int c)
 {
-	char	cwd[1024];
-
-	(void)args;
-	if (getcwd(cwd, sizeof(cwd)))
-		printf("%s\n", cwd);
-	else
-		perror("pwd");
-	set_exit_status(0);
+	if (c >= '0' && c <= '9')
+		return (1);
 	return (0);
 }

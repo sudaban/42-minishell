@@ -1,28 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/06 16:23:49 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/20 16:08:55 by sdaban           ###   ########.fr       */
+/*   Created: 2025/06/20 16:19:32 by sdaban            #+#    #+#             */
+/*   Updated: 2025/06/20 16:19:33 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include <unistd.h>
-#include <stdio.h>
-#include "../../Utils/Status/status.h"
 
-int	builtin_pwd(char **args)
+void	ft_putendl_fd(char *s, int fd)
 {
-	char	cwd[1024];
-
-	(void)args;
-	if (getcwd(cwd, sizeof(cwd)))
-		printf("%s\n", cwd);
-	else
-		perror("pwd");
-	set_exit_status(0);
-	return (0);
+	if (!s || fd < 0)
+		return ;
+	write(fd, s, ft_strlen(s));
+	write(fd, "\n", 1);
 }

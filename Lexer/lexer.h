@@ -6,12 +6,14 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:52:55 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/11 17:15:24 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/20 15:07:17 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
 # define LEXER_H
+
+#include "../minishell.h"
 
 typedef enum e_token_type
 {
@@ -41,5 +43,5 @@ typedef struct s_token
 
 t_token     *lexer(const char *input);
 void        print_token_debug(t_token *tokens);
-char	    *clean_quotes(const char *input);
+char	    *clean_quotes(const char *input, t_shell* shell);
 #endif

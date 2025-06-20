@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 13:46:04 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/19 13:56:14 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/20 15:03:51 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@
 #include <readline/readline.h>
 #include <stdbool.h>
 #include "../../minishell.h"
+#include "../../Utils/Memory/memory.h"
 
-static int	handle_heredoc(const char *delimiter, bool expand, char **env)
+static int	handle_heredoc(const char *delimiter, bool expand, t_shell* shell)
 {
 	int		pipefd[2];
 	char	*line;
@@ -43,20 +44,20 @@ static int	handle_heredoc(const char *delimiter, bool expand, char **env)
 			break;
 		}
 		if (expand)
-			expanded = expand_variables(line, env);
+			expanded = expand_variables(line, shell);
 		else
 			expanded = ft_strdup(line);
 		write(pipefd[1], expanded, ft_strlen(expanded));
 		write(pipefd[1], "\n", 1);
 		free(line);
-		free(expanded);
+		memory_free(expanded);
 	}
 	close(pipefd[1]);
 	return (pipefd[0]);
 }
 
 
-int	handle_redirections(t_redirection *redir, char **env)
+int	handle_redirections(t_redirection *redir, t_shell *shell)
 {
 	int	fd;
 
@@ -75,9 +76,9 @@ int	handle_redirections(t_redirection *redir, char **env)
 				delim = ft_substr(delim, 1, ft_strlen(delim) - 2);
 			}
 
-			fd = handle_heredoc(delim, !quoted, env);
+			fd = handle_heredoc(delim, !quoted, shell);
 			if (quoted)
-				free(delim);
+				memory_free(delim);
 		}
 		else if (redir->type == T_REDIRECT_IN)
 			fd = open(redir->filename, O_RDONLY);

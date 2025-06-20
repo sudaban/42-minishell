@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 13:35:12 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/18 16:53:43 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/20 15:21:37 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ static int	calc_len(const char *input, char **env)
 	return (len);
 }
 
-char	*expand_variables(const char *input, char **env)
+char	*expand_variables(const char *input, t_shell *shell)
 {
 	char	*result;
 	char	var[256];
@@ -101,7 +101,9 @@ char	*expand_variables(const char *input, char **env)
 	int		j;
 	int		k;
 
-	result = memory_malloc(calc_len(input, env) + 1);
+	if (!shell->should_expand)
+		return (ft_strdup(input));
+	result = memory_malloc(calc_len(input, shell->env) + 1);
 	if (!result)
 		return (NULL);
 	i = 0;
@@ -124,9 +126,16 @@ char	*expand_variables(const char *input, char **env)
 				while (input[i] && (ft_isalnum(input[i]) || input[i] == '_'))
 					var[k++] = input[i++];
 				var[k] = '\0';
-				val = get_env_value(var, env);
+				val = get_env_value(var, shell->env);
 				if (val)
 					copy_var_value(result, &j, val);
+				else
+				{
+					result[j++] = '$';
+					k = 0;
+					while (var[k])
+						result[j++] = var[k++];
+				}
 			}
 		}
 		else
@@ -135,6 +144,8 @@ char	*expand_variables(const char *input, char **env)
 	result[j] = '\0';
 	return (result);
 }
+
+
 
 char	*find_executable(char *cmd, char **env)
 {
@@ -190,7 +201,7 @@ void	exec_external(char **args, char **env)
 		}
 		execve(cmd_path, args, env);
 		perror("execve");
-		memory_cleanup(); // if failed
+		//memory_cleanup(); // if failed
 	}
 	else if (pid > 0)
 	{

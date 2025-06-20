@@ -21,6 +21,7 @@ SRC += \
 	Lexer/token_utils.c \
 	Parser/parser.c \
 	Utils/utils.c \
+	Utils/syntax.c \
 	Utils/Memory/memory.c \
 	Utils/Redirections/redirection.c \
 	Utils/Status/status.c \
@@ -39,7 +40,11 @@ SRC += \
 	Libft/ft_isspace.c \
 	Libft/ft_isalnum.c \
 	Libft/ft_strtok.c \
-	Libft/ft_itoa.c
+	Libft/ft_itoa.c \
+	Libft/ft_putstr_fd.c \
+	Libft/ft_putendl_fd.c \
+	Libft/ft_isdigit.c \
+	Libft/ft_atol.c
 
 
 OBJ = $(SRC:.c=.o)

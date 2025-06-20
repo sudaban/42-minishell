@@ -6,13 +6,14 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:23:54 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/11 17:15:03 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/20 16:09:02 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "unset.h"
 #include <stdlib.h>
 #include "../../Utils/Memory/memory.h"
+#include "../../Utils/Status/status.h"
 
 static int	match_key(char *entry, char *key)
 {
@@ -63,5 +64,6 @@ int	builtin_unset(char **args, t_shell *shell)
 		shell->env = remove_env_var(shell->env, args[i]);
 		i++;
 	}
+	set_exit_status(0);
 	return (0);
 }

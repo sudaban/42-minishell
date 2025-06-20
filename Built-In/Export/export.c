@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:23:45 by sdaban            #+#    #+#             */
-/*   Updated: 2025/05/06 16:23:46 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/20 16:08:49 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include "../../minishell.h"
 #include "../../Libft/libft.h"
+#include "../../Utils/Status/status.h"
 
 static int	builtin_export_no_args(t_shell *shell)
 {
@@ -35,6 +36,7 @@ static int	builtin_export_no_args(t_shell *shell)
 			printf("declare -x %s\n", shell->env[i]);
 		i++;
 	}
+	set_exit_status(0);
 	return (0);
 }
 
@@ -53,5 +55,6 @@ int	builtin_export(char **args, t_shell *shell)
 			shell->env = append_env(args[i], shell->env);
 		i++;
 	}
+	set_exit_status(0);
 	return (0);
 }

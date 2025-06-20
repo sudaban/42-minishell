@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 12:27:43 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/19 13:56:30 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/20 15:04:38 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,11 @@ void	execute_pipeline(t_ast_node *ast, t_shell *shell)
 
 			if (current->redirections)
 			{
-				if (handle_redirections(current->redirections, shell->env) != 0)
+				if (handle_redirections(current->redirections, shell) != 0)
 					exit(1);
 			}
 
 			execute_command(current->args, shell);
-			memory_cleanup();
 			exit(get_last_exit_status());
 		}
 		else if (pid < 0)
