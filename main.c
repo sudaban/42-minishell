@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 15:31:10 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/20 16:29:48 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/21 17:23:25 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,12 @@ int	main(int argc, char **argv, char **envp)
 	char		*input;
 	t_token		*tokens;
 	t_ast_node	*ast;
-	char		*quote_cleaned;
-	char		*expanded_input;
 
 	(void)argc;
-	(void)argv;
 	shell.env = envp;
-	shell.debug = true;
+	shell.debug = (argv[1] && !ft_strncmp(argv[1], "-d", 3));
 	setup_signals();
+
 	while (1)
 	{
 		input = readline("Born2Exec$ ");
@@ -62,16 +60,10 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (*input)
 			add_history(input);
-		quote_cleaned = clean_quotes(input, &shell);
-		if (!quote_cleaned)
-		{
-			memory_free(input);
-			continue ;
-		}
-		expanded_input = expand_variables(quote_cleaned, &shell);
-		memory_free(quote_cleaned);
-		tokens = lexer(expanded_input);
-		ast = parse_tokens(tokens);
+
+		tokens = lexer(input);
+		ast = parse_tokens(tokens, &shell);
+
 		if (shell.debug)
 		{
 			print_token_debug(tokens);
@@ -81,7 +73,6 @@ int	main(int argc, char **argv, char **envp)
 		execute_ast(ast, &shell);
 		memory_free(tokens);
 		memory_free(ast);
-		memory_free(expanded_input);
 		free(input);
 	}
 	rl_cleanup_after_signal();
@@ -90,11 +81,11 @@ int	main(int argc, char **argv, char **envp)
 	return (0);
 }
 
+
+
 // TO DO : env memory checking hsamir
 // ADD Input to memory list
 
 /*
-strace -e execve ls
 file name should be alphabetic or numeric after redirection
-export should not seperate values if there is a space
 */

@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 13:46:04 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/20 15:03:51 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/21 17:23:42 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,38 @@
 #include "../../minishell.h"
 #include "../../Utils/Memory/memory.h"
 
-static int	handle_heredoc(const char *delimiter, bool expand, t_shell* shell)
+void add_redirection_with_quoted(t_redirection **list, t_token *token, bool quoted)
+{
+    t_redirection *new_redir = memory_malloc(sizeof(t_redirection));
+    if (!new_redir)
+        return;
+    new_redir->type = token->type;
+    new_redir->quoted = quoted;
+    if (quoted)
+        new_redir->filename = ft_substr(token->next->value, 1, ft_strlen(token->next->value) - 2);
+    else
+        new_redir->filename = ft_strdup(token->next->value);
+    new_redir->next = NULL;
+
+    if (!*list)
+        *list = new_redir;
+    else
+    {
+        t_redirection *tmp = *list;
+        while (tmp->next)
+            tmp = tmp->next;
+        tmp->next = new_redir;
+    }
+}
+
+
+static int	handle_heredoc(const char *delimiter, bool expand, t_shell *shell)
 {
 	int		pipefd[2];
 	char	*line;
 	char	*expanded;
+
+	printf("[DEBUG] handle_heredoc called with delimiter=%s, expand=%d\n", delimiter, expand);
 
 	if (pipe(pipefd) == -1)
 	{
@@ -37,11 +64,11 @@ static int	handle_heredoc(const char *delimiter, bool expand, t_shell* shell)
 	{
 		line = readline("> ");
 		if (!line)
-			break;
+			break ;
 		if (ft_strncmp(line, delimiter, ft_strlen(delimiter) + 1) == 0)
 		{
 			free(line);
-			break;
+			break ;
 		}
 		if (expand)
 			expanded = expand_variables(line, shell);
@@ -56,29 +83,16 @@ static int	handle_heredoc(const char *delimiter, bool expand, t_shell* shell)
 	return (pipefd[0]);
 }
 
-
 int	handle_redirections(t_redirection *redir, t_shell *shell)
 {
-	int	fd;
+	int		fd;
 
 	while (redir)
 	{
 		fd = -1;
 		if (redir->type == T_HEREDOC)
 		{
-			bool quoted = false;
-			char *delim = redir->filename;
-
-			if ((delim[0] == '\'' || delim[0] == '"') &&
-				delim[ft_strlen(delim) - 1] == delim[0])
-			{
-				quoted = true;
-				delim = ft_substr(delim, 1, ft_strlen(delim) - 2);
-			}
-
-			fd = handle_heredoc(delim, !quoted, shell);
-			if (quoted)
-				memory_free(delim);
+			fd = handle_heredoc(redir->filename, shell->should_expand, shell);
 		}
 		else if (redir->type == T_REDIRECT_IN)
 			fd = open(redir->filename, O_RDONLY);
@@ -103,3 +117,4 @@ int	handle_redirections(t_redirection *redir, t_shell *shell)
 	}
 	return (0);
 }
+

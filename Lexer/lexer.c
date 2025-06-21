@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:53:04 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/20 15:49:22 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/21 13:52:38 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ t_token	*lexer(const char *input)
 {
 	t_token	*tokens = NULL;
 	int		i = 0;
+	int		start;
+	char	quote;
 
 	while (input[i])
 	{
@@ -53,14 +55,23 @@ t_token	*lexer(const char *input)
 			i++;
 		else if (input[i] == '\'' || input[i] == '"')
 		{
-			char quote = input[i++];
-			int start = i;
+			quote = input[i++];
+			start = i;
 			while (input[i] && input[i] != quote)
 				i++;
 			if (input[i] == quote)
-				add_token(&tokens, create_token(T_WORD, ft_substr(input, start, i - start)));
-			if (input[i]) 
-				i++;
+			{
+				if (quote == '\'')
+					add_token(&tokens, create_token(T_SINGLE_QUOTE, ft_substr(input, start, i - start)));
+				else
+					add_token(&tokens, create_token(T_DOUBLE_QUOTE, ft_substr(input, start, i - start)));
+				i++; // closing quote
+			}
+			else
+			{
+				// unclosed quote, treat rest as word including opening quote
+				add_token(&tokens, create_token(T_WORD, ft_substr(input, start - 1, i - start + 1)));
+			}
 		}
 		else if (input[i] == '|')
 		{
@@ -70,10 +81,7 @@ t_token	*lexer(const char *input)
 				i += 2;
 			}
 			else
-			{
-				add_token(&tokens, create_token(T_PIPE, "|"));
-				i++;
-			}
+				add_token(&tokens, create_token(T_PIPE, "|")), i++;
 		}
 		else if (input[i] == '<')
 		{
@@ -83,10 +91,7 @@ t_token	*lexer(const char *input)
 				i += 2;
 			}
 			else
-			{
-				add_token(&tokens, create_token(T_REDIRECT_IN, "<"));
-				i++;
-			}
+				add_token(&tokens, create_token(T_REDIRECT_IN, "<")), i++;
 		}
 		else if (input[i] == '>')
 		{
@@ -96,19 +101,16 @@ t_token	*lexer(const char *input)
 				i += 2;
 			}
 			else
-			{
-				add_token(&tokens, create_token(T_REDIRECT_OUT, ">"));
-				i++;
-			}
+				add_token(&tokens, create_token(T_REDIRECT_OUT, ">")), i++;
 		}
 		else if (input[i] == '$')
 		{
 			i++;
-			int start = i;
+			start = i;
 			while (ft_isalnum(input[i]) || input[i] == '_')
 				i++;
 			if (i > start)
-				add_token(&tokens, create_token(T_ENV_VAR, ft_substr(input, start, i - start)));
+				add_token(&tokens, create_token(T_ENV_VAR, ft_substr(input, start - 1, start)));
 			else
 				add_token(&tokens, create_token(T_WORD, "$"));
 		}
@@ -120,28 +122,24 @@ t_token	*lexer(const char *input)
 				i += 2;
 			}
 			else
-			{
-				add_token(&tokens, create_token(T_AMPERSAND, "&"));
-				i++;
-			}
+				add_token(&tokens, create_token(T_AMPERSAND, "&")), i++;
 		}
 		else
 		{
-			int start = i;
+			start = i;
 			while (input[i] && !ft_isspace(input[i]) &&
 				input[i] != '"' && input[i] != '\'' &&
 				input[i] != '|' && input[i] != '<' &&
 				input[i] != '>' && input[i] != '$' &&
 				input[i] != '&')
-			{
 				i++;
-			}
 			add_token(&tokens, create_token(T_WORD, ft_substr(input, start, i - start)));
 		}
 	}
 	add_token(&tokens, create_token(T_EOF, ft_strdup("EOF")));
 	return (tokens);
 }
+
 
 
 void print_token_debug(t_token *tokens)

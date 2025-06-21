@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:23:43 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/18 13:56:04 by itaskira         ###   ########.fr       */
+/*   Updated: 2025/06/21 17:31:44 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,26 @@
 
 int	is_valid_key(char *arg)
 {
-	int	i;
+	int		i;
 
-	if (!arg || !(arg[0] == '_' || (arg[0] >= 'A' && arg[0] <= 'Z')
-			|| (arg[0] >= 'a' && arg[0] <= 'z')))
+	if (!arg)
 		return (0);
-	i = 1;
+
+	i = 0;
+	if (!(arg[i] == '_' || ft_isalpha(arg[i])))
+		return (0);
+	i++;
+
 	while (arg[i] && arg[i] != '=')
 	{
-		if (!(arg[i] == '_' || (arg[i] >= 'A' && arg[i] <= 'Z')
-				|| (arg[i] >= 'a' && arg[i] <= 'z') || (arg[i] >= '0'
-					&& arg[i] <= '9')))
+		if (!(arg[i] == '_' || ft_isalnum(arg[i])))
 			return (0);
 		i++;
 	}
 	return (1);
 }
+
+
 
 static int	key_match(char *env_entry, char *new_entry)
 {

@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:23:24 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/20 15:45:16 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/21 16:57:56 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	builtin_cd(char **args)
 	if (chdir(path) != 0)
 	{
 		perror("cd");
-		set_exit_status(1);	
+		set_exit_status(1);
 		return (1);
 	}
 	set_exit_status(0);

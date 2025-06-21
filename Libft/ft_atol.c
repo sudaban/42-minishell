@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:21:27 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/20 16:22:50 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/21 16:57:42 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@ long	ft_atol(const char *str)
 {
 	int			i;
 	int			sign;
-	long	result;
+	long		result;
 
 	i = 0;
 	sign = 1;

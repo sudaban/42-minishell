@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:33:33 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/20 16:22:39 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/21 17:30:12 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,5 @@ void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 int		ft_isdigit(int c);
 long	ft_atol(const char *str);
+int		ft_isalpha(int c);
 #endif
