@@ -24,7 +24,7 @@ typedef struct s_shell
 }	t_shell;
 
 char	*get_env_value(const char *key, char **env);
-char	*expand_variables(const char *input, t_shell* shell);
+char	*expand_variables(const char *input, t_shell *shell);
 char	*find_executable(char *cmd, char **env);
 void	exec_external(char **args, char **env);
 bool	check_syntax(const char *input);

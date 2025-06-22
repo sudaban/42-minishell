@@ -17,8 +17,9 @@
 
 static bool	has_unclosed_quotes(const char *input)
 {
-	char	quote = 0;
+	char	quote;
 
+	quote = 0;
 	while (*input)
 	{
 		if ((*input == '\'' || *input == '"'))

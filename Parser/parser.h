@@ -14,24 +14,24 @@
 # define PARSER_H
 
 # include "../Lexer/lexer.h"
-#include <stdbool.h>
+# include <stdbool.h>
 
 typedef struct s_redirection
 {
-    t_token_type	type;
-    char			*filename;
-    bool            quoted;
-    struct s_redirection	*next;
+	t_token_type			type;
+	char					*filename;
+	bool					quoted;
+	struct s_redirection	*next;
 }	t_redirection;
 
 typedef struct s_ast_node
 {
-    char				**args;
-    t_redirection		*redirections;
-    struct s_ast_node	*next_pipe; // if pipe exists, next cmd
+	char				**args;
+	t_redirection		*redirections;
+	struct s_ast_node	*next_pipe; // if pipe exists, next cmd
 }	t_ast_node;
 
-t_ast_node	*parse_tokens(t_token *tokens, t_shell* shell);
+t_ast_node	*parse_tokens(t_token *tokens, t_shell *shell);
 void		print_ast_debug(t_ast_node *ast);
 
 #endif

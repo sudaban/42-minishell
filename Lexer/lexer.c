@@ -16,30 +16,34 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static t_token *create_token(t_token_type type, const char *value)
+static t_token	*create_token(t_token_type type, const char *value)
 {
-    t_token *new_token = memory_malloc(sizeof(t_token));
-    if (!new_token)
-        return NULL;
-    new_token->type = type;
-    new_token->value = ft_strdup(value);
-    new_token->next = NULL;
-    return new_token;
+	t_token		*new_token;
+
+	new_token = memory_malloc(sizeof(t_token));
+	if (!new_token)
+		return (NULL);
+	new_token->type = type;
+	new_token->value = ft_strdup(value);
+	new_token->next = NULL;
+	return (new_token);
 }
 
-static void add_token(t_token **head, t_token *new_token)
+static void	add_token(t_token **head, t_token *new_token)
 {
-    if (!*head)
-    {
-        *head = new_token;
-    }
-    else
-    {
-        t_token *current = *head;
-        while (current->next)
-            current = current->next;
-        current->next = new_token;
-    }
+	t_token		*current;
+
+	current = *head;
+	if (!*head)
+	{
+		*head = new_token;
+	}
+	else
+	{
+		while (current->next)
+			current = current->next;
+		current->next = new_token;
+	}
 }
 
 t_token	*lexer(const char *input)
@@ -140,34 +144,31 @@ t_token	*lexer(const char *input)
 	return (tokens);
 }
 
-
-
-void print_token_debug(t_token *tokens)
+void	print_token_debug(t_token *tokens)
 {
-    const char *token_type_str[] = {
-        "T_WORD",
-        "T_SINGLE_QUOTE",
-        "T_DOUBLE_QUOTE",
-        "T_PIPE",
-        "T_REDIRECT_IN",
-        "T_REDIRECT_OUT",
-        "T_APPEND_OUT",
-        "T_HEREDOC",
-        "T_ENV_VAR",
-        "T_EXIT_STATUS",
-        "T_NEWLINE",
-        "T_EOF",
-        "T_OR",
-        "T_AND",
-        "T_AMPERSAND"
-    };
-
-    while (tokens)
-    {
-        const char *token_type = "UNKNOWN";
-        if (tokens->type >= 0 && tokens->type <= T_AMPERSAND)
-            token_type = token_type_str[tokens->type];
-        printf("Token: '%s', Type: %s\n", tokens->value, token_type);
-        tokens = tokens->next;
-    }
+	const char	*token_type_str[] = {
+		"T_WORD",
+		"T_SINGLE_QUOTE",
+		"T_DOUBLE_QUOTE",
+		"T_PIPE",
+		"T_REDIRECT_IN",
+		"T_REDIRECT_OUT",
+		"T_APPEND_OUT",
+		"T_HEREDOC",
+		"T_ENV_VAR",
+		"T_EXIT_STATUS",
+		"T_NEWLINE",
+		"T_EOF",
+		"T_OR",
+		"T_AND",
+		"T_AMPERSAND"
+	};
+	while (tokens)
+	{
+		const char *token_type = "UNKNOWN";
+		if (tokens->type >= 0 && tokens->type <= T_AMPERSAND)
+			token_type = token_type_str[tokens->type];
+		printf("Token: '%s', Type: %s\n", tokens->value, token_type);
+		tokens = tokens->next;
+	}
 }

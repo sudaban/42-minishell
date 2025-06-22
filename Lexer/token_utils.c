@@ -15,7 +15,7 @@
 #include "../Utils/Memory/memory.h"
 #include "../minishell.h"
 
-char	*clean_quotes(const char *input, t_shell* shell)
+char	*clean_quotes(const char *input, t_shell *shell)
 {
 	int		i;
 	int		j;
@@ -32,7 +32,8 @@ char	*clean_quotes(const char *input, t_shell* shell)
 	{
 		if ((input[i] == '\'' || input[i] == '"') && quote == 0)
 		{
-			if (input[i] == '\'') shell->should_expand = false;
+			if (input[i] == '\'')
+				shell->should_expand = false;
 			quote = input[i++];
 		}
 		else if (input[i] == quote)

@@ -26,7 +26,7 @@ void	execute_pipeline(t_ast_node *ast, t_shell *shell)
 	int		input_fd = dup(STDIN_FILENO);
 	int		pid;
 	int		status;
-	t_ast_node *current = ast;
+	t_ast_node	*current = ast;
 
 	while (current)
 	{
@@ -37,7 +37,6 @@ void	execute_pipeline(t_ast_node *ast, t_shell *shell)
 			perror("pipe");
 			return ;
 		}
-
 		pid = fork();
 		if (pid == 0)
 		{
@@ -47,7 +46,6 @@ void	execute_pipeline(t_ast_node *ast, t_shell *shell)
 				dup2(input_fd, STDIN_FILENO);
 				close(input_fd);
 			}
-
 			// Output redirection (to next pipe)
 			if (has_next)
 			{
@@ -55,13 +53,11 @@ void	execute_pipeline(t_ast_node *ast, t_shell *shell)
 				close(pipefd[0]);
 				close(pipefd[1]);
 			}
-
 			if (current->redirections)
 			{
 				if (handle_redirections(current->redirections, shell) != 0)
 					exit(1);
 			}
-
 			execute_command(current->args, shell);
 			exit(get_last_exit_status());
 		}
@@ -70,7 +66,6 @@ void	execute_pipeline(t_ast_node *ast, t_shell *shell)
 			perror("fork");
 			return ;
 		}
-
 		// Parent: prepare for next iteration
 		if (input_fd != STDIN_FILENO)
 			close(input_fd);
@@ -79,10 +74,8 @@ void	execute_pipeline(t_ast_node *ast, t_shell *shell)
 			close(pipefd[1]);
 			input_fd = pipefd[0];
 		}
-
 		current = current->next_pipe;
 	}
-
 	while (wait(&status) > 0)
 		;
 	if (WIFEXITED(status))

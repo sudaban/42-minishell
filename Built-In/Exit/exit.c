@@ -17,6 +17,7 @@
 #include <stdbool.h>
 #include "../../Libft/libft.h"
 #include "../../Utils/Status/status.h"
+#include "../../Utils/Memory/memory.h"
 
 static int	is_numeric(const char *str)
 {
@@ -40,12 +41,16 @@ static int	is_numeric(const char *str)
 
 int	builtin_exit(char **args)
 {
-	long	status;
+	long	exit_code;
+	int		status;
 
 	ft_putendl_fd("exit", STDERR_FILENO);
 	if (!args[1])
-		exit(get_last_exit_status());
-	if (!is_numeric(args[1]))
+	{
+		exit(get_last_exit_status() % 256);
+	}
+	status = ft_atol(args[1], &exit_code);
+	if (!is_numeric(args[1]) || status == -1)
 	{
 		ft_putstr_fd("Born2Exec: exit: ", STDERR_FILENO);
 		ft_putstr_fd(args[1], STDERR_FILENO);
@@ -58,6 +63,5 @@ int	builtin_exit(char **args)
 		set_exit_status(1);
 		return (1);
 	}
-	status = ft_atol(args[1]);
-	exit((unsigned char)status);
+	exit((unsigned char)(exit_code % 256));
 }

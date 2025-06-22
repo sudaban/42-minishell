@@ -28,29 +28,28 @@
 
 void	execute_command(char **args, t_shell *shell)
 {
-    if (ft_strncmp(args[0], "exit", 5) == 0)
-        builtin_exit(args);
-    else if (ft_strncmp(args[0], "pwd", 4) == 0)
-        builtin_pwd(args);
-    else if (ft_strncmp(args[0], "echo", 5) == 0)
-        builtin_echo(args);
-    else if (ft_strncmp(args[0], "cd", 3) == 0)
-        builtin_cd(args);
-    else if (ft_strncmp(args[0], "env", 4) == 0)
-        builtin_env(shell->env);
-    else if (ft_strncmp(args[0], "export", 7) == 0)
-        builtin_export(args, shell);
-    else if (ft_strncmp(args[0], "unset", 6) == 0)
-        builtin_unset(args, shell);
-    else
-        exec_external(args, shell->env);
+	if (ft_strncmp(args[0], "exit", 5) == 0)
+		builtin_exit(args);
+	else if (ft_strncmp(args[0], "pwd", 4) == 0)
+		builtin_pwd(args);
+	else if (ft_strncmp(args[0], "echo", 5) == 0)
+		builtin_echo(args);
+	else if (ft_strncmp(args[0], "cd", 3) == 0)
+		builtin_cd(args);
+	else if (ft_strncmp(args[0], "env", 4) == 0)
+		builtin_env(shell->env);
+	else if (ft_strncmp(args[0], "export", 7) == 0)
+		builtin_export(args, shell);
+	else if (ft_strncmp(args[0], "unset", 6) == 0)
+		builtin_unset(args, shell);
+	else
+		exec_external(args, shell->env);
 }
 
 void	execute_ast(t_ast_node *ast, t_shell *shell)
 {
 	if (!ast)
-		return;
-
+		return ;
 	if (ast->next_pipe)
 	{
 		execute_pipeline(ast, shell);
@@ -69,10 +68,9 @@ void	execute_ast(t_ast_node *ast, t_shell *shell)
 				dup2(stdout_backup, 1);
 				close(stdin_backup);
 				close(stdout_backup);
-				return;
+				return ;
 			}
 		}
-		
 		if (!ast->args || !ast->args[0])
 		{
 			dup2(stdin_backup, 0);
@@ -80,10 +78,9 @@ void	execute_ast(t_ast_node *ast, t_shell *shell)
 			close(stdin_backup);
 			close(stdout_backup);
 			set_exit_status(0);
-			return;
+			return ;
 		}
 		execute_command(ast->args, shell);
-
 		dup2(stdin_backup, 0);
 		dup2(stdout_backup, 1);
 		close(stdin_backup);

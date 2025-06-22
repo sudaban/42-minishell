@@ -32,6 +32,6 @@ char	*ft_itoa(int n);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 int		ft_isdigit(int c);
-long	ft_atol(const char *str);
+long	ft_atol(const char *str, long *out);
 int		ft_isalpha(int c);
 #endif

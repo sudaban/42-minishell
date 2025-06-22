@@ -45,7 +45,7 @@ static char	**remove_env_var(char **env, char *key)
 	while (env[i])
 	{
 		if (match_key(env[i], key))
-			memory_free(env[i]); // check env free
+			memory_free(env[i]);
 		else
 			new_env[j++] = env[i];
 		i++;

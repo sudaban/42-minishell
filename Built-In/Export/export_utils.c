@@ -21,12 +21,10 @@ int	is_valid_key(char *arg)
 
 	if (!arg)
 		return (0);
-
 	i = 0;
 	if (!(arg[i] == '_' || ft_isalpha(arg[i])))
 		return (0);
 	i++;
-
 	while (arg[i] && arg[i] != '=')
 	{
 		if (!(arg[i] == '_' || ft_isalnum(arg[i])))
@@ -35,8 +33,6 @@ int	is_valid_key(char *arg)
 	}
 	return (1);
 }
-
-
 
 static int	key_match(char *env_entry, char *new_entry)
 {

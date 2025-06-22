@@ -22,30 +22,33 @@
 #include "../../minishell.h"
 #include "../../Utils/Memory/memory.h"
 
-void add_redirection_with_quoted(t_redirection **list, t_token *token, bool quoted)
+void	add_redirection_with_quoted(t_redirection **list,
+	t_token *token, bool quoted)
 {
-    t_redirection *new_redir = memory_malloc(sizeof(t_redirection));
-    if (!new_redir)
-        return;
-    new_redir->type = token->type;
-    new_redir->quoted = quoted;
-    if (quoted)
-        new_redir->filename = ft_substr(token->next->value, 1, ft_strlen(token->next->value) - 2);
-    else
-        new_redir->filename = ft_strdup(token->next->value);
-    new_redir->next = NULL;
+	t_redirection	*new_redir;
+	t_redirection	*tmp;
 
-    if (!*list)
-        *list = new_redir;
-    else
-    {
-        t_redirection *tmp = *list;
-        while (tmp->next)
-            tmp = tmp->next;
-        tmp->next = new_redir;
-    }
+	tmp = *list;
+	new_redir = memory_malloc(sizeof(t_redirection));
+	if (!new_redir)
+		return ;
+	new_redir->type = token->type;
+	new_redir->quoted = quoted;
+	if (quoted)
+		new_redir->filename = ft_substr(token->next->value,
+				1, ft_strlen(token->next->value) - 2);
+	else
+		new_redir->filename = ft_strdup(token->next->value);
+	new_redir->next = NULL;
+	if (!*list)
+		*list = new_redir;
+	else
+	{
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new_redir;
+	}
 }
-
 
 static int	handle_heredoc(const char *delimiter, bool expand, t_shell *shell)
 {
@@ -53,8 +56,8 @@ static int	handle_heredoc(const char *delimiter, bool expand, t_shell *shell)
 	char	*line;
 	char	*expanded;
 
-	printf("[DEBUG] handle_heredoc called with delimiter=%s, expand=%d\n", delimiter, expand);
-
+	printf("[DEBUG] handle_heredoc called with delimiter=%s, expand=%d\n",
+		delimiter, expand);
 	if (pipe(pipefd) == -1)
 	{
 		perror("pipe");
@@ -100,7 +103,6 @@ int	handle_redirections(t_redirection *redir, t_shell *shell)
 			fd = open(redir->filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		else if (redir->type == T_APPEND_OUT)
 			fd = open(redir->filename, O_CREAT | O_WRONLY | O_APPEND, 0644);
-
 		if (fd == -1)
 		{
 			perror(redir->filename);
@@ -111,10 +113,8 @@ int	handle_redirections(t_redirection *redir, t_shell *shell)
 			dup2(fd, STDIN_FILENO);
 		else
 			dup2(fd, STDOUT_FILENO);
-
 		close(fd);
 		redir = redir->next;
 	}
 	return (0);
 }
-

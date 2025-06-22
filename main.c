@@ -42,7 +42,6 @@ int	main(int argc, char **argv, char **envp)
 	shell.env = envp;
 	shell.debug = (argv[1] && !ft_strncmp(argv[1], "-d", 3));
 	setup_signals();
-
 	while (1)
 	{
 		input = readline("Born2Exec$ ");
@@ -60,10 +59,8 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (*input)
 			add_history(input);
-
 		tokens = lexer(input);
 		ast = parse_tokens(tokens, &shell);
-
 		if (shell.debug)
 		{
 			print_token_debug(tokens);
@@ -75,13 +72,9 @@ int	main(int argc, char **argv, char **envp)
 		memory_free(ast);
 		free(input);
 	}
-	rl_cleanup_after_signal();
-	rl_clear_history();
 	memory_cleanup();
 	return (0);
 }
-
-
 
 // TO DO : env memory checking hsamir
 // ADD Input to memory list

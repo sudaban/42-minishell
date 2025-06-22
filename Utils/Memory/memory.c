@@ -12,10 +12,13 @@
 
 #include "memory.h"
 #include <stdlib.h>
+#include <readline/history.h>
+#include <readline/readline.h>
 
-static t_memory	**get_mem_list()
+static t_memory	**get_mem_list(void)
 {
-	static t_memory *mem_list = NULL;
+	static t_memory	*mem_list = NULL;
+
 	return (&mem_list);
 }
 
@@ -41,38 +44,44 @@ void	*memory_malloc(size_t size)
 
 void	memory_free(void *ptr)
 {
-	t_memory  **head = get_mem_list();
-	t_memory  *prev = NULL;
-	t_memory  *cur = *head;
+	t_memory	**head;
+	t_memory	*prev;
+	t_memory	*cur;
 
+	head = get_mem_list();
+	prev = NULL;
+	cur = *head;
 	while (cur)
 	{
 		if (cur->ptr == ptr)
 		{
-            if (prev)
-                prev->next = cur->next;
-            else
-                *head = cur->next;
-            free(cur->ptr);
-            free(cur);
-            return;
-        }
-        prev = cur;
-        cur = cur->next;
-    }
+			if (prev)
+				prev->next = cur->next;
+			else
+				*head = cur->next;
+			free(cur->ptr);
+			free(cur);
+			return ;
+		}
+		prev = cur;
+		cur = cur->next;
+	}
 }
 
-void    memory_cleanup()
+void	memory_cleanup(void)
 {
-    t_memory  *tmp;
-    t_memory  **head = get_mem_list();
+	t_memory	*tmp;
+	t_memory	**head;
 
-    while (*head)
-    {
-        tmp = *head;
-        *head = (*head)->next;
-        free(tmp->ptr);
-        free(tmp);
-    }
+	head = get_mem_list();
+	while (*head)
+	{
+		tmp = *head;
+		*head = (*head)->next;
+		free(tmp->ptr);
+		free(tmp);
+	}
+	rl_cleanup_after_signal();
+	rl_clear_history();
 	exit(0);
 }

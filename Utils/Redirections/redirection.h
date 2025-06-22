@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include "../../minishell.h"
 
-int	handle_redirections(t_redirection *redir, t_shell *shell);
-void add_redirection_with_quoted(t_redirection **list, t_token *token, bool quoted);
+int		handle_redirections(t_redirection *redir, t_shell *shell);
+void	add_redirection_with_quoted(t_redirection **list,
+			t_token *token, bool quoted);
 #endif
