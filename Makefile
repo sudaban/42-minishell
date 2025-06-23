@@ -28,7 +28,8 @@ SRC += \
 	Utils/Redirections/redirection.c \
 	Utils/Status/status.c \
 	Executor/executor.c \
-	Executor/pipe.c
+	Executor/pipe.c \
+	Executor/pipe_utils.c
 
 SRC += \
 	Libft/ft_strlen.c \

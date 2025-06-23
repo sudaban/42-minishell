@@ -6,7 +6,7 @@
 /*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 13:41:40 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 01:42:23 by itaskira         ###   ########.fr       */
+/*   Updated: 2025/06/24 02:33:52 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,46 +46,54 @@ void	execute_command(char **args, t_shell *shell)
 		exec_external(args, shell->env);
 }
 
-void	execute_ast(t_ast_node *ast, t_shell *shell)
+static void	cleanup_fds(int stdin_fd, int stdout_fd)
+{
+	dup2(stdin_fd, 0);
+	dup2(stdout_fd, 1);
+	close(stdin_fd);
+	close(stdout_fd);
+}
+
+static int	setup_and_check_redirections(t_ast_node *ast, t_shell *shell,
+		int stdin_fd, int stdout_fd)
+{
+	if (ast->redirections)
+	{
+		if (handle_redirections(ast->redirections, shell) != 0)
+		{
+			set_exit_status(1);
+			cleanup_fds(stdin_fd, stdout_fd);
+			return (1);
+		}
+	}
+	if (!ast->args || !ast->args[0])
+	{
+		cleanup_fds(stdin_fd, stdout_fd);
+		set_exit_status(0);
+		return (1);
+	}
+	return (0);
+}
+
+static void	execute_simple_command(t_ast_node *ast, t_shell *shell)
 {
 	int	stdin_backup;
 	int	stdout_backup;
 
+	stdin_backup = dup(0);
+	stdout_backup = dup(1);
+	if (setup_and_check_redirections(ast, shell, stdin_backup, stdout_backup))
+		return ;
+	execute_command(ast->args, shell);
+	cleanup_fds(stdin_backup, stdout_backup);
+}
+
+void	execute_ast(t_ast_node *ast, t_shell *shell)
+{
 	if (!ast)
 		return ;
 	if (ast->next_pipe)
-	{
 		execute_pipeline(ast, shell);
-	}
 	else
-	{
-		stdin_backup = dup(0);
-		stdout_backup = dup(1);
-		if (ast->redirections)
-		{
-			if (handle_redirections(ast->redirections, shell) != 0)
-			{
-				set_exit_status(1);
-				dup2(stdin_backup, 0);
-				dup2(stdout_backup, 1);
-				close(stdin_backup);
-				close(stdout_backup);
-				return ;
-			}
-		}
-		if (!ast->args || !ast->args[0])
-		{
-			dup2(stdin_backup, 0);
-			dup2(stdout_backup, 1);
-			close(stdin_backup);
-			close(stdout_backup);
-			set_exit_status(0);
-			return ;
-		}
-		execute_command(ast->args, shell);
-		dup2(stdin_backup, 0);
-		dup2(stdout_backup, 1);
-		close(stdin_backup);
-		close(stdout_backup);
-	}
+		execute_simple_command(ast, shell);
 }

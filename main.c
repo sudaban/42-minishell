@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 15:31:10 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 02:02:53 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 02:28:37 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,51 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int	main(int argc, char **argv, char **envp)
+static int	process_input(char *input, t_shell *shell)
 {
-	t_shell		shell;
-	char		*input;
+	(void)shell;
+	if (!input)
+	{
+		printf("exit\n");
+		return (0);
+	}
+	if (!check_syntax(input))
+	{
+		set_exit_status(2);
+		free(input);
+		return (1);
+	}
+	if (*input)
+		add_history(input);
+	return (2);
+}
+
+static void	process_command(char *input, t_shell *shell)
+{
+	char		**splitted;
 	t_token		*tokens;
 	t_ast_node	*ast;
-	char		**splitted;
+
+	splitted = lexer_split(input, ' ', shell);
+	tokens = lexer(splitted);
+	ast = parse_tokens(tokens, shell);
+	if (shell->debug)
+	{
+		print_token_debug(tokens);
+		printf("--------------------------------------------------\n");
+		print_ast_debug(ast);
+	}
+	execute_ast(ast, shell);
+	memory_free(tokens);
+	memory_free(ast);
+	free(input);
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_shell	shell;
+	char	*input;
+	int		status;
 
 	(void)argc;
 	shell.env = envp;
@@ -47,32 +85,12 @@ int	main(int argc, char **argv, char **envp)
 		set_signal_handler(0);
 		input = readline("Born2Exec$ ");
 		shell.should_expand = true;
-		if (!input)
-		{
-			printf("exit\n");
+		status = process_input(input, &shell);
+		if (status == 0)
 			break ;
-		}
-		if (!check_syntax(input))
-		{
-			set_exit_status(2);
-			free(input);
+		else if (status == 1)
 			continue ;
-		}
-		if (*input)
-			add_history(input);
-		splitted = lexer_split(input, ' ', &shell);
-		tokens = lexer(splitted);
-		ast = parse_tokens(tokens, &shell);
-		if (shell.debug)
-		{
-			print_token_debug(tokens);
-			printf("--------------------------------------------------\n");
-			print_ast_debug(ast);
-		}
-		execute_ast(ast, &shell);
-		memory_free(tokens);
-		memory_free(ast);
-		free(input);
+		process_command(input, &shell);
 	}
 	memory_cleanup(0);
 	return (0);

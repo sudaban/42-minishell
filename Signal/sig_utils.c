@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sig_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 01:58:01 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 02:19:15 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 02:44:28 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	handle_exec(int signal)
 	handle_exit_status(signal + 128, 0, 0);
 }
 
-void	handle_heredoc(int signal)
+void	handle_heredoc_sig(int signal)
 {
 	g_signal = signal;
 	rl_replace_line("", 0);
