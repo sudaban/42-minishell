@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:18:20 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/23 12:09:33 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/23 16:05:48 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <stddef.h>
 # include <stdbool.h>
 
-extern int	g_heredoc;
+extern int	g_signal;
 
 typedef struct s_shell
 {

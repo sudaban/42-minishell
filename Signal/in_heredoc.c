@@ -1,34 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   in_heredoc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/06 16:16:09 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/23 16:05:48 by sdaban           ###   ########.fr       */
+/*   Created: 2025/06/23 12:33:07 by sdaban            #+#    #+#             */
+/*   Updated: 2025/06/23 12:33:22 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <signal.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <unistd.h>
-
-int g_signal = 1;
-void	handle_sigint(int sig)
+int	*heredoc_state_ptr(void)
 {
-	(void)sig;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	static int	in_heredoc;
+
+	return (&in_heredoc);
 }
 
-void	setup_signals(void)
+void	set_heredoc_state(int state)
 {
-	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, SIG_IGN);
+	*heredoc_state_ptr() = state;
 }
-// SIGINT = CTRL C
-/* SIGQUIT = Ctrl + \ */
+
+int	heredoc_state(void)
+{
+	return (*heredoc_state_ptr());
+}

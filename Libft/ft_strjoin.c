@@ -1,34 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/06 16:16:09 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/23 16:05:48 by sdaban           ###   ########.fr       */
+/*   Created: 2025/06/23 13:40:27 by sdaban            #+#    #+#             */
+/*   Updated: 2025/06/23 13:40:30 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <signal.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <unistd.h>
+#include "libft.h"
+#include <stdlib.h>
 
-int g_signal = 1;
-void	handle_sigint(int sig)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	(void)sig;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
+	char	*str;
+	char	*new;
 
-void	setup_signals(void)
-{
-	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, SIG_IGN);
+	if (!s1 || !s2)
+		return (NULL);
+	str = (char *)malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
+	if (str == NULL)
+		return (NULL);
+	new = str;
+	while (*s1)
+		*str++ = *s1++;
+	while (*s2)
+		*str++ = *s2++;
+	*str = '\0';
+	return (new);
 }
-// SIGINT = CTRL C
-/* SIGQUIT = Ctrl + \ */

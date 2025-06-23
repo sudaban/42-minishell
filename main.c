@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 15:31:10 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/23 12:10:50 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/23 16:05:48 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	main(int argc, char **argv, char **envp)
 	setup_signals();
 	while (1)
 	{
-		g_heredoc = 1;
+		g_signal = 1;
 		input = readline("Born2Exec$ ");
 		shell.should_expand = true;
 		if (!input)

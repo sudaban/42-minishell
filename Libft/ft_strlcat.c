@@ -1,34 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/06 16:16:09 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/23 16:05:48 by sdaban           ###   ########.fr       */
+/*   Created: 2025/06/23 15:58:38 by sdaban            #+#    #+#             */
+/*   Updated: 2025/06/23 15:58:41 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <signal.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <unistd.h>
 
-int g_signal = 1;
-void	handle_sigint(int sig)
-{
-	(void)sig;
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
-}
+#include "libft.h"
 
-void	setup_signals(void)
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
-	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, SIG_IGN);
+	size_t		i;
+	size_t		dest_size;
+	size_t		src_size;
+
+	dest_size = ft_strlen(dst);
+	src_size = ft_strlen(src);
+	if (dstsize <= dest_size)
+		return (src_size + dstsize);
+	i = 0;
+	while (src[i] && (dest_size + i) < (dstsize - 1))
+	{
+		dst[dest_size + i] = src[i];
+		i++;
+	}
+	dst[dest_size + i] = '\0';
+	return (dest_size + src_size);
 }
-// SIGINT = CTRL C
-/* SIGQUIT = Ctrl + \ */
