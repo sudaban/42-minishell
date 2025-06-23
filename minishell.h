@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:18:20 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/20 15:01:36 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/23 12:09:33 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,14 @@
 # include <stddef.h>
 # include <stdbool.h>
 
+extern int	g_heredoc;
+
 typedef struct s_shell
 {
 	char	**env;
 	bool	debug;
 	bool	should_expand;
+	bool	in_heredoc;
 }	t_shell;
 
 char	*get_env_value(const char *key, char **env);

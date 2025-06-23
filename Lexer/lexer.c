@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:53:04 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/21 13:52:38 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/23 12:01:20 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,13 +111,22 @@ t_token	*lexer(const char *input)
 		{
 			i++;
 			start = i;
-			while (ft_isalnum(input[i]) || input[i] == '_')
+			if (input[i] == '?' || ft_isdigit(input[i]))
+			{
 				i++;
-			if (i > start)
-				add_token(&tokens, create_token(T_ENV_VAR, ft_substr(input, start - 1, start)));
+				add_token(&tokens, create_token(T_ENV_VAR, ft_substr(input, start - 1, i - start + 1)));
+			}
 			else
-				add_token(&tokens, create_token(T_WORD, "$"));
+			{
+				while (ft_isalnum(input[i]) || input[i] == '_')
+					i++;
+				if (i > start)
+					add_token(&tokens, create_token(T_ENV_VAR, ft_substr(input, start - 1, i - start + 1)));
+				else
+					add_token(&tokens, create_token(T_WORD, "$"));
+			}
 		}
+
 		else if (input[i] == '&')
 		{
 			if (input[i + 1] == '&')

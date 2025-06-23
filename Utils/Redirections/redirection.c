@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 13:46:04 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/21 17:23:42 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/23 12:08:12 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ static int	handle_heredoc(const char *delimiter, bool expand, t_shell *shell)
 	}
 	while (1)
 	{
+		g_heredoc = 1;
 		line = readline("> ");
 		if (!line)
 			break ;
