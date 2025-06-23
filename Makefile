@@ -22,6 +22,8 @@ SRC += \
 	Lexer/lexer_split.c \
 	Lexer/token_utils.c \
 	Parser/parser.c \
+	Parser/parser_utils.c \
+	Parser/parser_handlers.c \
 	Utils/utils.c \
 	Utils/syntax.c \
 	Utils/Memory/memory.c \
