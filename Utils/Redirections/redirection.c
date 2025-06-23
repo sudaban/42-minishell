@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 13:46:04 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 02:29:50 by itaskira         ###   ########.fr       */
+/*   Updated: 2025/06/24 02:26:31 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 #include <unistd.h>
 #include "../../Signal/signal.h"
 
-void	add_redirection_with_quoted(t_redirection **list, t_token *token,
+void	add_redir_quoted(t_redirection **list, t_token *token,
 		bool quoted)
 {
 	t_redirection	*new_redir;
@@ -73,7 +73,7 @@ static int	handle_heredoc(const char *delimiter, bool expand, t_shell *shell)
 				free(line);
 			close(pipefd[1]);
 			close(pipefd[0]);
-			return (-1);
+			return (-1); // heredoc aborted
 		}
 		if (ft_strncmp(line, delimiter, ft_strlen(delimiter) + 1) == 0)
 		{
