@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   memory.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:46:49 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 00:57:52 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 01:43:55 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ typedef struct s_memory
 {
 	void			*ptr;
 	struct s_memory	*next;
-}	t_memory;
+}					t_memory;
 
-void	*memory_malloc(size_t size);
-void	memory_free(void *ptr);
-void	memory_cleanup(int status);
+void				*memory_malloc(size_t size);
+void				memory_free(void *ptr);
+void				memory_cleanup(int status);
 #endif

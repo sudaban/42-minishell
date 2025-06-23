@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:39:22 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/21 16:57:19 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 01:54:31 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
 #include "../Utils/Memory/memory.h"
+#include <stdlib.h>
 
 static size_t	pull_digit_count(int num)
 {

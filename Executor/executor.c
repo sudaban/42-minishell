@@ -3,28 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 13:41:40 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/20 15:48:41 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 01:42:23 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
-#include "../Built-In/Exit/exit.h"
-#include "../Built-In/Pwd/pwd.h"
-#include "../Built-In/Echo/echo.h"
 #include "../Built-In/Cd/cd.h"
+#include "../Built-In/Echo/echo.h"
 #include "../Built-In/Env/env.h"
+#include "../Built-In/Exit/exit.h"
 #include "../Built-In/Export/export.h"
+#include "../Built-In/Pwd/pwd.h"
 #include "../Built-In/Unset/unset.h"
 #include "../Libft/libft.h"
 #include "../Utils/Redirections/redirection.h"
 #include "../Utils/Status/status.h"
-#include <unistd.h>
-#include <string.h>
+#include "executor.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 
 void	execute_command(char **args, t_shell *shell)
 {
@@ -48,6 +48,9 @@ void	execute_command(char **args, t_shell *shell)
 
 void	execute_ast(t_ast_node *ast, t_shell *shell)
 {
+	int	stdin_backup;
+	int	stdout_backup;
+
 	if (!ast)
 		return ;
 	if (ast->next_pipe)
@@ -56,9 +59,8 @@ void	execute_ast(t_ast_node *ast, t_shell *shell)
 	}
 	else
 	{
-		int	stdin_backup = dup(0);
-		int	stdout_backup = dup(1);
-
+		stdin_backup = dup(0);
+		stdout_backup = dup(1);
 		if (ast->redirections)
 		{
 			if (handle_redirections(ast->redirections, shell) != 0)

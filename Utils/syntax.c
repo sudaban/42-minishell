@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 12:37:03 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/20 12:40:11 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 01:44:15 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../Libft/libft.h"
 #include "../minishell.h"
 #include <stdbool.h>
 #include <stdio.h>
-#include "../Libft/libft.h"
 
 static bool	has_unclosed_quotes(const char *input)
 {

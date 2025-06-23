@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:37:33 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/11 14:21:49 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 01:54:29 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../Utils/Memory/memory.h"
 #include "libft.h"
 #include <stdlib.h>
-#include "../Utils/Memory/memory.h"
 
-static	size_t	count_words(const char *str, char delimiter)
+static size_t	count_words(const char *str, char delimiter)
 {
 	size_t	word_count;
 

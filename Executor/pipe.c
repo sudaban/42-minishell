@@ -3,35 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 12:27:43 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/20 15:04:38 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 01:48:16 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <sys/wait.h>
-#include <fcntl.h>
-#include <stdio.h>
-#include "executor.h"
 #include "../Utils/Memory/memory.h"
 #include "../Utils/Redirections/redirection.h"
 #include "../Utils/Status/status.h"
+#include "executor.h"
+#include <fcntl.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 void	execute_pipeline(t_ast_node *ast, t_shell *shell)
 {
-	int		pipefd[2];
-	int		input_fd = dup(STDIN_FILENO);
-	int		pid;
-	int		status;
-	t_ast_node	*current = ast;
+	int			pipefd[2];
+	int			input_fd;
+	int			pid;
+	int			status;
+	t_ast_node	*current;
+	int			has_next;
 
+	input_fd = dup(STDIN_FILENO);
+	current = ast;
 	while (current)
 	{
-		int		has_next = (current->next_pipe != NULL);
-
+		has_next = (current->next_pipe != NULL);
 		if (has_next && pipe(pipefd) == -1)
 		{
 			perror("pipe");
@@ -40,13 +42,11 @@ void	execute_pipeline(t_ast_node *ast, t_shell *shell)
 		pid = fork();
 		if (pid == 0)
 		{
-			// Input redirection (from previous pipe)
 			if (input_fd != STDIN_FILENO)
 			{
 				dup2(input_fd, STDIN_FILENO);
 				close(input_fd);
 			}
-			// Output redirection (to next pipe)
 			if (has_next)
 			{
 				dup2(pipefd[1], STDOUT_FILENO);
@@ -66,7 +66,6 @@ void	execute_pipeline(t_ast_node *ast, t_shell *shell)
 			perror("fork");
 			return ;
 		}
-		// Parent: prepare for next iteration
 		if (input_fd != STDIN_FILENO)
 			close(input_fd);
 		if (has_next)

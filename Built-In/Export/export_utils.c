@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:23:43 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/21 17:31:44 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 01:41:59 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 int	is_valid_key(char *arg)
 {
-	int		i;
+	int	i;
 
 	if (!arg)
 		return (0);

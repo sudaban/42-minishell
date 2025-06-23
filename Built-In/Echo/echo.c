@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:23:27 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/20 15:55:53 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 01:41:39 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
 #include "../../Libft/libft.h"
 #include "../../Utils/Status/status.h"
+#include <unistd.h>
 
 int	is_n_flag(char *arg)
 {

@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:23:39 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 00:59:06 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 01:41:52 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include "../../Libft/libft.h"
+#include "../../Utils/Memory/memory.h"
+#include "../../Utils/Status/status.h"
 #include <limits.h>
 #include <stdbool.h>
-#include "../../Libft/libft.h"
-#include "../../Utils/Status/status.h"
-#include "../../Utils/Memory/memory.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 static int	is_numeric(const char *str)
 {

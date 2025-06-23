@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 15:31:10 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 01:12:31 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 01:44:39 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@
 #include "Parser/parser.h"
 #include "Signal/signal.h"
 #include "Utils/Memory/memory.h"
+#include "Utils/Status/status.h"
 #include "minishell.h"
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "Utils/Status/status.h"
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -37,6 +37,7 @@ int	main(int argc, char **argv, char **envp)
 	char		*input;
 	t_token		*tokens;
 	t_ast_node	*ast;
+	char		**splitted;
 
 	(void)argc;
 	shell.env = envp;
@@ -60,7 +61,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (*input)
 			add_history(input);
-		char **splitted = lexer_split(input, ' ', &shell);
+		splitted = lexer_split(input, ' ', &shell);
 		tokens = lexer(splitted);
 		ast = parse_tokens(tokens, &shell);
 		if (shell.debug)
@@ -77,10 +78,3 @@ int	main(int argc, char **argv, char **envp)
 	memory_cleanup(0);
 	return (0);
 }
-
-// TO DO : env memory checking hsamir
-// ADD Input to memory list
-
-/*
-file name should be alphabetic or numeric after redirection
-*/

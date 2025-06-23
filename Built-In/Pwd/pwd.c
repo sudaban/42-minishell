@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:23:49 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/20 16:08:55 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 01:42:08 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdio.h>
 #include "../../Utils/Status/status.h"
+#include <stdio.h>
+#include <unistd.h>
 
 int	builtin_pwd(char **args)
 {

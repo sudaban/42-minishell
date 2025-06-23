@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 13:35:12 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 01:11:09 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 01:52:04 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,8 +138,6 @@ char	*expand_variables(const char *input, t_shell *shell)
 	return (result);
 }
 
-
-
 char	*find_executable(char *cmd, char **env)
 {
 	char	*path;
@@ -190,11 +188,10 @@ void	exec_external(char **args, char **env)
 		if (!cmd_path)
 		{
 			fprintf(stderr, "Command not found: %s\n", args[0]);
-			exit(127); // main process will set status
+			exit(127);
 		}
 		execve(cmd_path, args, env);
 		perror("execve");
-		//memory_cleanup(); // if failed
 	}
 	else if (pid > 0)
 	{
@@ -202,7 +199,7 @@ void	exec_external(char **args, char **env)
 		if (WIFEXITED(status))
 			set_exit_status(WEXITSTATUS(status));
 		else
-			set_exit_status(1); // if signal
+			set_exit_status(1);
 	}
 	else
 	{

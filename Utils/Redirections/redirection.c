@@ -3,27 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 13:46:04 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/23 16:05:48 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 01:52:27 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "redirection.h"
-#include "../Status/status.h"
 #include "../../Libft/libft.h"
-#include <stdio.h>
+#include "../../Utils/Memory/memory.h"
+#include "../../minishell.h"
+#include "../Status/status.h"
+#include "redirection.h"
 #include <fcntl.h>
-#include <unistd.h>
-#include <stdlib.h>
 #include <readline/readline.h>
 #include <stdbool.h>
-#include "../../minishell.h"
-#include "../../Utils/Memory/memory.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
-void	add_redirection_with_quoted(t_redirection **list,
-	t_token *token, bool quoted)
+void	add_redirection_with_quoted(t_redirection **list, t_token *token,
+		bool quoted)
 {
 	t_redirection	*new_redir;
 	t_redirection	*tmp;
@@ -35,8 +35,8 @@ void	add_redirection_with_quoted(t_redirection **list,
 	new_redir->type = token->type;
 	new_redir->quoted = quoted;
 	if (quoted)
-		new_redir->filename = ft_substr(token->next->value,
-				1, ft_strlen(token->next->value) - 2);
+		new_redir->filename = ft_substr(token->next->value, 1,
+				ft_strlen(token->next->value) - 2);
 	else
 		new_redir->filename = ft_strdup(token->next->value);
 	new_redir->next = NULL;
@@ -89,7 +89,7 @@ static int	handle_heredoc(const char *delimiter, bool expand, t_shell *shell)
 
 int	handle_redirections(t_redirection *redir, t_shell *shell)
 {
-	int		fd;
+	int	fd;
 
 	while (redir)
 	{

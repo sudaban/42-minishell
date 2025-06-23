@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   memory.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:46:47 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 00:57:16 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 01:43:52 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "memory.h"
-#include <stdlib.h>
 #include <readline/history.h>
 #include <readline/readline.h>
+#include <stdlib.h>
 
 static t_memory	**get_mem_list(void)
 {

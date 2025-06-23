@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atol.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:21:27 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/21 16:57:42 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 01:54:33 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
-#include <limits.h>
 #include "libft.h"
+#include <limits.h>
+#include <stddef.h>
 
 long	ft_atol(const char *str, long *out)
 {

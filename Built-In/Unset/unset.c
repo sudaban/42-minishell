@@ -3,34 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
+/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:23:54 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 01:05:26 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 01:45:46 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "unset.h"
-#include <stdlib.h>
 #include "../../Utils/Memory/memory.h"
 #include "../../Utils/Status/status.h"
+#include "unset.h"
+#include <stdlib.h>
 
 static int	match_key(char *entry, char *key)
 {
-	int	i = 0;
+	int	i;
 
+	i = 0;
 	while (entry[i] && key[i] && entry[i] == key[i])
 		i++;
-
 	return (key[i] == '\0' && (entry[i] == '=' || entry[i] == '\0'));
 }
 
-
 static int	env_count_except(char **env, char *key)
 {
-	int	count = 0;
-	int	i = 0;
+	int	count;
+	int	i;
 
+	count = 0;
+	i = 0;
 	while (env[i])
 	{
 		if (!match_key(env[i], key))
@@ -42,19 +43,23 @@ static int	env_count_except(char **env, char *key)
 
 static char	**remove_env_var(char **env, char *key)
 {
-	int		i = 0, j = 0;
-	int		new_size = env_count_except(env, key);
-	char	**new_env = memory_malloc(sizeof(char *) * (new_size + 1));
+	int		i;
+	int		j;
+	int		new_size;
+	char	**new_env;
 
+	i = 0;
+	j = 0;
+	new_size = env_count_except(env, key);
+	new_env = memory_malloc(sizeof(char *) * (new_size + 1));
 	if (!new_env)
 		return (NULL);
-
 	while (env[i])
 	{
 		if (!match_key(env[i], key))
-			new_env[j++] = env[i]; // koruyoruz
+			new_env[j++] = env[i];
 		else
-			memory_free(env[i]); // siliyoruz
+			memory_free(env[i]);
 		i++;
 	}
 	new_env[j] = NULL;
