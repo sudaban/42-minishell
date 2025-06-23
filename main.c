@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 15:31:10 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 01:44:39 by itaskira         ###   ########.fr       */
+/*   Updated: 2025/06/24 02:02:53 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,9 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	shell.env = envp;
 	shell.debug = (argv[1] && !ft_strncmp(argv[1], "-d", 3));
-	setup_signals();
 	while (1)
 	{
-		g_signal = 1;
+		set_signal_handler(0);
 		input = readline("Born2Exec$ ");
 		shell.should_expand = true;
 		if (!input)

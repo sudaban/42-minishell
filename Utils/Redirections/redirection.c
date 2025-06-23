@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 13:46:04 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 01:52:27 by itaskira         ###   ########.fr       */
+/*   Updated: 2025/06/24 02:16:01 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "../../Signal/signal.h"
 
 void	add_redirection_with_quoted(t_redirection **list, t_token *token,
 		bool quoted)
@@ -56,19 +57,24 @@ static int	handle_heredoc(const char *delimiter, bool expand, t_shell *shell)
 	char	*line;
 	char	*expanded;
 
-	printf("[DEBUG] handle_heredoc called with delimiter=%s, expand=%d\n",
-		delimiter, expand);
 	if (pipe(pipefd) == -1)
 	{
 		perror("pipe");
 		return (-1);
 	}
+	set_signal_handler(2);
 	while (1)
 	{
 		g_signal = 1;
 		line = readline("> ");
-		if (!line)
-			break ;
+		if (!line || get_last_exit_status() == 130)
+		{
+			if (line)
+				free(line);
+			close(pipefd[1]);
+			close(pipefd[0]);
+			return (-1); // heredoc aborted
+		}
 		if (ft_strncmp(line, delimiter, ft_strlen(delimiter) + 1) == 0)
 		{
 			free(line);
@@ -97,6 +103,8 @@ int	handle_redirections(t_redirection *redir, t_shell *shell)
 		if (redir->type == T_HEREDOC)
 		{
 			fd = handle_heredoc(redir->filename, shell->should_expand, shell);
+			if (fd == -1)
+				return (1);
 		}
 		else if (redir->type == T_REDIRECT_IN)
 			fd = open(redir->filename, O_RDONLY);

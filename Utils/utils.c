@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 13:35:12 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 01:52:04 by itaskira         ###   ########.fr       */
+/*   Updated: 2025/06/24 02:06:50 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include "../Signal/signal.h"
 
 char	*get_env_value(const char *key, char **env)
 {
@@ -195,7 +196,9 @@ void	exec_external(char **args, char **env)
 	}
 	else if (pid > 0)
 	{
+		set_signal_handler(1);
 		waitpid(pid, &status, 0);
+		set_signal_handler(0);
 		if (WIFEXITED(status))
 			set_exit_status(WEXITSTATUS(status));
 		else

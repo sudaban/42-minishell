@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   status.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/17 16:21:49 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 01:44:08 by itaskira         ###   ########.fr       */
+/*   Updated: 2025/06/24 02:10:59 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "status.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 int	*get_exit_status(void)
 {
@@ -27,4 +29,13 @@ void	set_exit_status(int code)
 int	get_last_exit_status(void)
 {
 	return (*get_exit_status());
+}
+
+void	handle_exit_status(int status, const char *message, bool should_exit)
+{
+	if (message)
+		perror(message);
+	set_exit_status(status);
+	if (should_exit)
+		exit(status);
 }

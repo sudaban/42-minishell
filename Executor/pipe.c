@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 12:27:43 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 01:48:16 by itaskira         ###   ########.fr       */
+/*   Updated: 2025/06/24 02:07:00 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#include "../Signal/signal.h"
 
 void	execute_pipeline(t_ast_node *ast, t_shell *shell)
 {
@@ -66,6 +67,10 @@ void	execute_pipeline(t_ast_node *ast, t_shell *shell)
 			perror("fork");
 			return ;
 		}
+		else
+		{
+			set_signal_handler(1);
+		}
 		if (input_fd != STDIN_FILENO)
 			close(input_fd);
 		if (has_next)
@@ -79,4 +84,7 @@ void	execute_pipeline(t_ast_node *ast, t_shell *shell)
 		;
 	if (WIFEXITED(status))
 		set_exit_status(WEXITSTATUS(status));
+
+	set_signal_handler(0);
 }
+

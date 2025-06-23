@@ -5,6 +5,7 @@ CFLAGS = -Wall -Wextra -Werror
 SRC = \
 	main.c \
 	Signal/signal.c \
+	Signal/sig_utils.c
 
 SRC += \
 	Built-In/Exit/exit.c \
