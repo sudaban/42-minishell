@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:23:54 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/20 16:09:02 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 01:05:26 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,37 +17,44 @@
 
 static int	match_key(char *entry, char *key)
 {
-	int	i;
+	int	i = 0;
 
-	i = 0;
-	while (key[i] && entry[i] && key[i] == entry[i])
+	while (entry[i] && key[i] && entry[i] == key[i])
 		i++;
-	if (key[i] == '\0' && entry[i] == '=')
-		return (1);
-	return (0);
+
+	return (key[i] == '\0' && (entry[i] == '=' || entry[i] == '\0'));
+}
+
+
+static int	env_count_except(char **env, char *key)
+{
+	int	count = 0;
+	int	i = 0;
+
+	while (env[i])
+	{
+		if (!match_key(env[i], key))
+			count++;
+		i++;
+	}
+	return (count);
 }
 
 static char	**remove_env_var(char **env, char *key)
 {
-	int		i;
-	int		j;
-	int		count;
-	char	**new_env;
+	int		i = 0, j = 0;
+	int		new_size = env_count_except(env, key);
+	char	**new_env = memory_malloc(sizeof(char *) * (new_size + 1));
 
-	count = 0;
-	while (env[count])
-		count++;
-	new_env = memory_malloc(sizeof(char *) * count);
 	if (!new_env)
 		return (NULL);
-	i = 0;
-	j = 0;
+
 	while (env[i])
 	{
-		if (match_key(env[i], key))
-			memory_free(env[i]);
+		if (!match_key(env[i], key))
+			new_env[j++] = env[i]; // koruyoruz
 		else
-			new_env[j++] = env[i];
+			memory_free(env[i]); // siliyoruz
 		i++;
 	}
 	new_env[j] = NULL;
@@ -56,12 +63,20 @@ static char	**remove_env_var(char **env, char *key)
 
 int	builtin_unset(char **args, t_shell *shell)
 {
-	int	i;
+	int		i;
+	char	**new_env;
+	char	**old_env;
 
 	i = 1;
 	while (args[i])
 	{
-		shell->env = remove_env_var(shell->env, args[i]);
+		old_env = shell->env;
+		new_env = remove_env_var(shell->env, args[i]);
+		if (new_env)
+			shell->env = new_env;
+		else
+			return (set_exit_status(1), 1);
+		memory_free(old_env);
 		i++;
 	}
 	set_exit_status(0);

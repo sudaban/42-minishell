@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:46:47 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/11 14:21:23 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 00:57:16 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	memory_free(void *ptr)
 	}
 }
 
-void	memory_cleanup(void)
+void	memory_cleanup(int status)
 {
 	t_memory	*tmp;
 	t_memory	**head;
@@ -83,5 +83,5 @@ void	memory_cleanup(void)
 	}
 	rl_cleanup_after_signal();
 	rl_clear_history();
-	exit(0);
+	exit(status);
 }

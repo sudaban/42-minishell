@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:35:43 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/21 17:27:37 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/23 23:59:25 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,10 @@ t_ast_node	*parse_tokens(t_token *token, t_shell *shell)
 			else if (token->type == T_DOUBLE_QUOTE)
 				shell->should_expand = true;
 			
-			processed = clean_quotes(token->value, shell);
+			//if (token->type != T_DOUBLE_QUOTE && token->type != T_SINGLE_QUOTE)
+				processed = clean_quotes(token->value, shell);
+			//else
+			//	processed = ft_strdup(token->value);
 			if (shell->should_expand)
 			{
 				char *expanded = expand_variables(processed, shell);

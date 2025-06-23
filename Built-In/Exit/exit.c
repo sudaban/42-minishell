@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:23:39 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/20 16:26:34 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 00:59:06 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	builtin_exit(char **args)
 	ft_putendl_fd("exit", STDERR_FILENO);
 	if (!args[1])
 	{
-		exit(get_last_exit_status() % 256);
+		memory_cleanup(get_last_exit_status() % 256);
 	}
 	status = ft_atol(args[1], &exit_code);
 	if (!is_numeric(args[1]) || status == -1)
@@ -55,7 +55,7 @@ int	builtin_exit(char **args)
 		ft_putstr_fd("Born2Exec: exit: ", STDERR_FILENO);
 		ft_putstr_fd(args[1], STDERR_FILENO);
 		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
-		exit(255);
+		memory_cleanup(255);
 	}
 	if (args[2])
 	{
@@ -63,5 +63,6 @@ int	builtin_exit(char **args)
 		set_exit_status(1);
 		return (1);
 	}
-	exit((unsigned char)(exit_code % 256));
+	memory_cleanup((unsigned char)(exit_code % 256));
+	return (1337);
 }

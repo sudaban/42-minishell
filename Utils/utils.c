@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 13:35:12 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/21 17:17:51 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 01:11:09 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,13 +129,6 @@ char	*expand_variables(const char *input, t_shell *shell)
 				val = get_env_value(var, shell->env);
 				if (val)
 					copy_var_value(result, &j, val);
-				else
-				{
-					result[j++] = '$';
-					k = 0;
-					while (var[k])
-						result[j++] = var[k++];
-				}
 			}
 		}
 		else

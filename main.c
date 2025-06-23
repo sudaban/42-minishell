@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 15:31:10 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/23 16:05:48 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 01:12:31 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (*input)
 			add_history(input);
-		tokens = lexer(input);
+		char **splitted = lexer_split(input, ' ', &shell);
+		tokens = lexer(splitted);
 		ast = parse_tokens(tokens, &shell);
 		if (shell.debug)
 		{
@@ -73,7 +74,7 @@ int	main(int argc, char **argv, char **envp)
 		memory_free(ast);
 		free(input);
 	}
-	memory_cleanup();
+	memory_cleanup(0);
 	return (0);
 }
 

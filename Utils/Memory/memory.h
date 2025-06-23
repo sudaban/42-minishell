@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 13:46:49 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/11 14:21:27 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 00:57:52 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,5 @@ typedef struct s_memory
 
 void	*memory_malloc(size_t size);
 void	memory_free(void *ptr);
-void	memory_cleanup(void);
+void	memory_cleanup(int status);
 #endif
