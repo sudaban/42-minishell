@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_split.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 00:47:54 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 01:42:35 by itaskira         ###   ########.fr       */
+/*   Updated: 2025/06/24 03:00:57 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ static size_t	count_words(const char *str, char delimiter)
 	quote = 0;
 	while (str[i])
 	{
-		while (str[i] == delimiter)
-			i++;
+		skip_delimiters(str, &i, delimiter);
 		if (!str[i])
 			break ;
 		word_count++;
@@ -105,7 +104,6 @@ char	**lexer_split(char const *s, char c, t_shell *shell)
 	expanded = NULL;
 	if (!s)
 		return (NULL);
-	// should_expand aktifse expand_variables uygula
 	if (shell->should_expand)
 		expanded = expand_variables(s, shell);
 	else

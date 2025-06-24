@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:53:04 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 01:50:37 by itaskira         ###   ########.fr       */
+/*   Updated: 2025/06/24 02:55:21 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,34 +49,12 @@ static void	add_token(t_token **head, t_token *new_token)
 
 t_token_type	get_token_type(const char *value)
 {
-	if (strcmp(value, "|") == 0)
-		return (T_PIPE);
-	else if (strcmp(value, "<") == 0)
-		return (T_REDIRECT_IN);
-	else if (strcmp(value, ">") == 0)
-		return (T_REDIRECT_OUT);
-	else if (strcmp(value, ">>") == 0)
-		return (T_APPEND_OUT);
-	else if (strcmp(value, "<<") == 0)
-		return (T_HEREDOC);
-	else if (strcmp(value, "&") == 0)
-		return (T_AMPERSAND);
-	else if (strcmp(value, "||") == 0)
-		return (T_OR);
-	else if (strcmp(value, "&&") == 0)
-		return (T_AND);
-	else if (value[0] == '\'' && value[strlen(value) - 1] == '\'')
-		return (T_SINGLE_QUOTE);
-	else if (value[0] == '\"' && value[strlen(value) - 1] == '\"')
-		return (T_DOUBLE_QUOTE);
-	else if (value[0] == '$')
-		return (T_ENV_VAR);
-	else if (strcmp(value, "\n") == 0)
-		return (T_NEWLINE);
-	else if (strcmp(value, "") == 0)
-		return (T_EOF);
-	else
-		return (T_WORD);
+	t_token_type	type;
+
+	type = match_operator(value);
+	if (type != T_WORD)
+		return (type);
+	return (match_specials(value));
 }
 
 t_token	*lexer(char **input)
