@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sig_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 01:58:01 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 02:44:28 by itaskira         ###   ########.fr       */
+/*   Updated: 2025/06/24 06:41:19 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	handle_prompt(int signal)
 void	handle_sigquit(int signal)
 {
 	g_signal = signal;
-	ft_putendl_fd("quit (core dumped)", 1);
+	ft_putendl_fd("Quit (core dumped)", 1);
 	rl_replace_line("", 0);
 	handle_exit_status(signal + 128, 0, 0);
 }

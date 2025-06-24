@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 06:12:02 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 06:30:37 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 06:42:40 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	exec_child_process(char *cmd, char **args, char **env)
 	char	*cmd_path;
 
 	cmd_path = get_cmd_path_and_check(cmd, env);
+	set_signal_handler(1);
 	execve(cmd_path, args, env);
 	perror("execve");
 	exit(1);

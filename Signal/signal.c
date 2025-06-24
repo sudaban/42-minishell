@@ -3,33 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/06 16:16:09 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 02:43:34 by itaskira         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include <readline/history.h>
-#include <readline/readline.h>
-#include <signal.h>
-#include <unistd.h>
-
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:16:09 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 01:50:03 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 06:41:51 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <signal.h>
-#include <readline/readline.h>
 #include <readline/history.h>
+#include <readline/readline.h>
+#include <signal.h>
 #include <unistd.h>
 #include "../Libft/libft.h"
 #include "signal.h"
