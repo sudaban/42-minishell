@@ -6,7 +6,7 @@
 /*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:35:38 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 01:46:40 by itaskira         ###   ########.fr       */
+/*   Updated: 2025/06/24 05:38:40 by itaskira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ typedef struct s_ast_node
 {
 	char					**args;
 	t_redirection			*redirections;
-	struct s_ast_node *next_pipe;
+	struct s_ast_node		*next_pipe;
 }							t_ast_node;
 
 t_ast_node					*parse_tokens(t_token *tokens, t_shell *shell);
