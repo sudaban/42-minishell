@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:35:43 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 04:37:59 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 06:01:59 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,49 +16,7 @@
 #include "parser.h"
 #include <stdio.h>
 
-static void	add_arg(char ***args, char *value)
-{
-	int		i;
-	char	**new_args;
-
-	if (!*args)
-	{
-		*args = memory_malloc(sizeof(char *) * 2);
-		(*args)[0] = ft_strdup(value);
-		(*args)[1] = NULL;
-		return ;
-	}
-	for (i = 0; (*args)[i]; i++)
-		;
-	new_args = memory_malloc(sizeof(char *) * (i + 2));
-	for (i = 0; (*args)[i]; i++)
-		new_args[i] = (*args)[i];
-	new_args[i] = ft_strdup(value);
-	new_args[i + 1] = NULL;
-	*args = new_args;
-}
-
-static void	add_redirection(t_redirection **list, t_token *token)
-{
-	t_redirection	*new;
-	t_redirection	*tmp;
-
-	new = memory_malloc(sizeof(t_redirection));
-	new->type = token->type;
-	new->filename = ft_strdup(token->next->value);
-	new->next = NULL;
-	if (!*list)
-		*list = new;
-	else
-	{
-		tmp = *list;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new;
-	}
-}
-
-static t_ast_node	*create_node(void)
+t_ast_node	*create_node(void)
 {
 	t_ast_node	*node;
 
@@ -73,15 +31,9 @@ t_ast_node	*parse_tokens(t_token *token, t_shell *shell)
 {
 	t_ast_node	*head;
 	t_ast_node	*current;
-	char		*processed;
-	char		*expanded;
-	char		*filename;
-	size_t		len;
-	bool		quoted;
 
 	head = NULL;
 	current = NULL;
-	processed = NULL;
 	while (token && token->type != T_EOF)
 	{
 		if (!current)
@@ -92,54 +44,13 @@ t_ast_node	*parse_tokens(t_token *token, t_shell *shell)
 		}
 		if (token->type == T_WORD || token->type == T_ENV_VAR
 			|| token->type == T_DOUBLE_QUOTE || token->type == T_SINGLE_QUOTE)
-		{
-			if (token->type == T_SINGLE_QUOTE)
-				shell->should_expand = false;
-			else if (token->type == T_DOUBLE_QUOTE)
-				shell->should_expand = true;
-			processed = clean_quotes(token->value, shell);
-			if (shell->should_expand)
-			{
-				expanded = expand_variables(processed, shell);
-				add_arg(&current->args, expanded);
-				memory_free(expanded);
-			}
-			else
-			{
-				add_arg(&current->args, processed);
-			}
-			memory_free(processed);
-		}
-		else if (token->type == T_REDIRECT_IN || token->type == T_REDIRECT_OUT
-			|| token->type == T_APPEND_OUT)
-		{
-			if (token->next)
-				add_redirection(&current->redirections, token);
-			token = token->next;
-		}
+			handle_word_token(current, token, shell);
+		else if (token->type == 4 || token->type == 5 || token->type == 6)
+			handle_redirection_token(current, &token, shell);
 		else if (token->type == T_HEREDOC)
-		{
-			if (token->next)
-			{
-				filename = token->next->value;
-				len = ft_strlen(filename);
-				quoted = false;
-				if (len > 1 && (filename[0] == '\'' || filename[0] == '"')
-						&& filename[len - 1] == filename[0])
-					quoted = true;
-				if (token->next->type == T_SINGLE_QUOTE
-					|| token->next->type == T_DOUBLE_QUOTE)
-					shell->should_expand = false;
-				add_redirection_with_quoted(&current->redirections, token,
-					quoted);
-				token = token->next;
-			}
-		}
+			handle_redirection_token(current, &token, shell);
 		else if (token->type == T_PIPE)
-		{
-			current->next_pipe = create_node();
-			current = current->next_pipe;
-		}
+			handle_pipe_token(&current);
 		token = token->next;
 	}
 	return (head);
@@ -153,8 +64,12 @@ void	print_ast_debug(t_ast_node *ast)
 	while (ast)
 	{
 		printf("Command:\n");
-		for (i = 0; ast->args && ast->args[i]; i++)
+		i = 0;
+		while (ast->args && ast->args[i])
+		{
 			printf("  Arg[%d]: %s\n", i, ast->args[i]);
+			i++;
+		}
 		redir = ast->redirections;
 		while (redir)
 		{
