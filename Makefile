@@ -25,6 +25,7 @@ SRC += \
 	Parser/parser.c \
 	Parser/parser_helper.c \
 	Utils/utils.c \
+	Utils/utils2.c \
 	Utils/helper.c \
 	Utils/syntax.c \
 	Utils/Memory/memory.c \

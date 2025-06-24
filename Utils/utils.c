@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 13:35:12 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 05:37:56 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 06:20:14 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,48 +40,29 @@ char	*get_env_value(const char *key, char **env)
 
 char	*expand_variables(const char *input, t_shell *shell)
 {
-	char	*result;
-	char	var[256];
-	char	*val;
-	int		i;
-	int		j;
-	int		k;
+	t_expand_context	ctx;
 
 	if (!shell->should_expand)
 		return (ft_strdup(input));
-	result = memory_malloc(calc_len(input, shell->env) + 1);
-	if (!result)
+	ctx.result = memory_malloc(calc_len(input, shell->env) + 1);
+	if (!ctx.result)
 		return (NULL);
-	i = 0;
-	j = 0;
-	while (input[i])
+	ctx.input = input;
+	ctx.shell = shell;
+	ctx.i = 0;
+	ctx.j = 0;
+	while (input[ctx.i])
 	{
-		if (input[i] == '$')
+		if (input[ctx.i] == '$')
 		{
-			i++;
-			if (input[i] == '?')
-			{
-				val = ft_itoa(get_last_exit_status());
-				copy_var_value(result, &j, val);
-				memory_free(val);
-				i++;
-			}
-			else
-			{
-				k = 0;
-				while (input[i] && (ft_isalnum(input[i]) || input[i] == '_'))
-					var[k++] = input[i++];
-				var[k] = '\0';
-				val = get_env_value(var, shell->env);
-				if (val)
-					copy_var_value(result, &j, val);
-			}
+			ctx.i++;
+			handle_variable_expansion(&ctx);
 		}
 		else
-			result[j++] = input[i++];
+			ctx.result[ctx.j++] = input[ctx.i++];
 	}
-	result[j] = '\0';
-	return (result);
+	ctx.result[ctx.j] = '\0';
+	return (ctx.result);
 }
 
 char	*find_executable(char *cmd, char **env)
@@ -108,39 +89,6 @@ char	*find_executable(char *cmd, char **env)
 		i++;
 	}
 	return (NULL);
-}
-static char	*get_cmd_path_and_check(char *cmd, char **env)
-{
-	char	*cmd_path;
-
-	cmd_path = get_cmd_path(cmd, env);
-	if (!cmd_path)
-	{
-		fprintf(stderr, "Command not found: %s\n", cmd);
-		exit(127);
-	}
-	return (cmd_path);
-}
-
-static void	exec_child_process(char *cmd, char **args, char **env)
-{
-	char	*cmd_path;
-
-	cmd_path = get_cmd_path_and_check(cmd, env);
-	execve(cmd_path, args, env);
-	perror("execve");
-	exit(1);
-}
-
-static void	exec_parent_process(pid_t pid, int *status)
-{
-	set_signal_handler(1);
-	waitpid(pid, status, 0);
-	set_signal_handler(0);
-	if (WIFEXITED(*status))
-		set_exit_status(WEXITSTATUS(*status));
-	else
-		set_exit_status(1);
 }
 
 void	exec_external(char **args, char **env)
