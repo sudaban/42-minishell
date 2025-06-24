@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:53:04 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 04:52:41 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 05:19:44 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,22 +113,4 @@ void	print_token_debug(t_token *tokens)
 		printf("Token: '%s', Type: %s\n", tokens->value, token_type);
 		tokens = tokens->next;
 	}
-}
-
-void adjust_should_expand(const char *input, t_shell *shell)
-{
-    int single_quote_count = 0;
-    size_t i = 0;
-
-    while (input[i])
-    {
-        if (input[i] == '\'')
-            single_quote_count++;
-        i++;
-    }
-
-    if (single_quote_count >= 2 && single_quote_count % 2 == 0)
-        shell->should_expand = false;
-    else
-        shell->should_expand = true;
 }

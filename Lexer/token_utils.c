@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:51:26 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 01:42:51 by itaskira         ###   ########.fr       */
+/*   Updated: 2025/06/24 05:22:49 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,23 @@ char	*clean_quotes(const char *input, t_shell *shell)
 	}
 	result[j] = '\0';
 	return (result);
+}
+
+void	adjust_should_expand(const char *input, t_shell *shell)
+{
+	int		single_quote_count;
+	size_t	i;
+
+	i = 0;
+	single_quote_count = 0;
+	while (input[i])
+	{
+		if (input[i] == '\'')
+			single_quote_count++;
+		i++;
+	}
+	if (single_quote_count >= 2 && single_quote_count % 2 == 0)
+		shell->should_expand = false;
+	else
+		shell->should_expand = true;
 }

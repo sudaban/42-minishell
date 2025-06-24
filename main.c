@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 15:31:10 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 04:49:11 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 05:23:38 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static void	process_command(char *input, t_shell *shell)
 	char		**splitted;
 	t_token		*tokens;
 	t_ast_node	*ast;
+
 	adjust_should_expand(input, shell);
 	splitted = lexer_split(input, ' ', shell);
 	tokens = lexer(splitted);

@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 13:35:12 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 02:06:50 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 05:37:56 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,61 +36,6 @@ char	*get_env_value(const char *key, char **env)
 		i++;
 	}
 	return (NULL);
-}
-
-static void	copy_var_value(char *result, int *j, char *val)
-{
-	int	m;
-
-	m = 0;
-	while (val[m])
-	{
-		if (val[m] != '\'' && val[m] != '\"')
-			result[(*j)++] = val[m];
-		m++;
-	}
-}
-
-static int	calc_len(const char *input, char **env)
-{
-	int		len;
-	int		i;
-	int		k;
-	char	var[256];
-	char	*val;
-
-	i = 0;
-	len = 0;
-	while (input[i])
-	{
-		if (input[i] == '$')
-		{
-			i++;
-			if (input[i] == '?')
-			{
-				val = ft_itoa(get_last_exit_status());
-				len += ft_strlen(val);
-				memory_free(val);
-				i++;
-			}
-			else
-			{
-				k = 0;
-				while (input[i] && (ft_isalnum(input[i]) || input[i] == '_'))
-					var[k++] = input[i++];
-				var[k] = '\0';
-				val = get_env_value(var, env);
-				if (val)
-					len += ft_strlen(val);
-			}
-		}
-		else
-		{
-			len++;
-			i++;
-		}
-	}
-	return (len);
 }
 
 char	*expand_variables(const char *input, t_shell *shell)
@@ -164,45 +109,53 @@ char	*find_executable(char *cmd, char **env)
 	}
 	return (NULL);
 }
-
-static char	*get_cmd_path(char *cmd, char **env)
+static char	*get_cmd_path_and_check(char *cmd, char **env)
 {
-	if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/'))
+	char	*cmd_path;
+
+	cmd_path = get_cmd_path(cmd, env);
+	if (!cmd_path)
 	{
-		if (access(cmd, X_OK) == 0)
-			return (ft_strdup(cmd));
-		return (NULL);
+		fprintf(stderr, "Command not found: %s\n", cmd);
+		exit(127);
 	}
-	return (find_executable(cmd, env));
+	return (cmd_path);
+}
+
+static void	exec_child_process(char *cmd, char **args, char **env)
+{
+	char	*cmd_path;
+
+	cmd_path = get_cmd_path_and_check(cmd, env);
+	execve(cmd_path, args, env);
+	perror("execve");
+	exit(1);
+}
+
+static void	exec_parent_process(pid_t pid, int *status)
+{
+	set_signal_handler(1);
+	waitpid(pid, status, 0);
+	set_signal_handler(0);
+	if (WIFEXITED(*status))
+		set_exit_status(WEXITSTATUS(*status));
+	else
+		set_exit_status(1);
 }
 
 void	exec_external(char **args, char **env)
 {
 	pid_t	pid;
 	int		status;
-	char	*cmd_path;
 
 	pid = fork();
 	if (pid == 0)
 	{
-		cmd_path = get_cmd_path(args[0], env);
-		if (!cmd_path)
-		{
-			fprintf(stderr, "Command not found: %s\n", args[0]);
-			exit(127);
-		}
-		execve(cmd_path, args, env);
-		perror("execve");
+		exec_child_process(args[0], args, env);
 	}
 	else if (pid > 0)
 	{
-		set_signal_handler(1);
-		waitpid(pid, &status, 0);
-		set_signal_handler(0);
-		if (WIFEXITED(status))
-			set_exit_status(WEXITSTATUS(status));
-		else
-			set_exit_status(1);
+		exec_parent_process(pid, &status);
 	}
 	else
 	{

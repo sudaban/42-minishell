@@ -23,6 +23,7 @@ SRC += \
 	Lexer/token_utils.c \
 	Parser/parser.c \
 	Utils/utils.c \
+	Utils/helper.c \
 	Utils/syntax.c \
 	Utils/Memory/memory.c \
 	Utils/Redirections/redirection.c \
