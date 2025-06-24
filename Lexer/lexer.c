@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:53:04 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 05:49:07 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 06:33:30 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include "lexer.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 static t_token	*create_token(t_token_type type, const char *value)
 {

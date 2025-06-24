@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 13:35:12 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 06:20:14 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 06:32:01 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,24 @@ char	*expand_variables(const char *input, t_shell *shell)
 	return (ctx.result);
 }
 
+static char	*join_path_cmd(const char *dir, const char *cmd)
+{
+	char	*tmp;
+	char	*full;
+
+	tmp = ft_strjoin(dir, "/");
+	if (!tmp)
+		return (NULL);
+	full = ft_strjoin(tmp, cmd);
+	memory_free(tmp);
+	return (full);
+}
+
 char	*find_executable(char *cmd, char **env)
 {
 	char	*path;
 	char	**dirs;
-	char	full_path[512];
-	char	*ret;
+	char	*full_path;
 	int		i;
 
 	path = get_env_value("PATH", env);
@@ -80,12 +92,12 @@ char	*find_executable(char *cmd, char **env)
 	i = 0;
 	while (dirs[i])
 	{
-		snprintf(full_path, sizeof(full_path), "%s/%s", dirs[i], cmd);
+		full_path = join_path_cmd(dirs[i], cmd);
+		if (!full_path)
+			return (NULL);
 		if (access(full_path, X_OK) == 0)
-		{
-			ret = ft_strdup(full_path);
-			return (ret);
-		}
+			return (full_path);
+		memory_free(full_path);
 		i++;
 	}
 	return (NULL);

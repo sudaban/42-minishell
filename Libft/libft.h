@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:33:33 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 01:54:35 by itaskira         ###   ########.fr       */
+/*   Updated: 2025/06/24 06:32:26 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,5 @@ void	ft_putendl_fd(char *s, int fd);
 int		ft_isdigit(int c);
 long	ft_atol(const char *str, long *out);
 int		ft_isalpha(int c);
+char	*ft_strjoin(char const *s1, char const *s2);
 #endif

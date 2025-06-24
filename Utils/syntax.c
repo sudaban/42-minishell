@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 12:37:03 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 01:44:15 by itaskira         ###   ########.fr       */
+/*   Updated: 2025/06/24 06:30:19 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "../minishell.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include <unistd.h>
 
 static bool	has_unclosed_quotes(const char *input)
 {
@@ -45,12 +46,13 @@ bool	check_syntax(const char *input)
 {
 	if (has_unclosed_quotes(input))
 	{
-		fprintf(stderr, "Syntax error: unclosed quote\n");
+		ft_putstr_fd("Syntax error: unclosed quote\n", STDERR_FILENO);
 		return (false);
 	}
 	if (starts_with_pipe(input))
 	{
-		fprintf(stderr, "Syntax error: input cannot start with a pipe\n");
+		ft_putstr_fd("Syntax error: input cannot start with a pipe\n",
+			STDERR_FILENO);
 		return (false);
 	}
 	return (true);

@@ -54,8 +54,8 @@ SRC += \
 	Libft/ft_putendl_fd.c \
 	Libft/ft_isdigit.c \
 	Libft/ft_atol.c \
-	Libft/ft_isalpha.c
-
+	Libft/ft_isalpha.c \
+	Libft/ft_strjoin.c \
 
 OBJ = $(SRC:.c=.o)
 

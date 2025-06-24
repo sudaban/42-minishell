@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: itaskira <itaskira@student.42kocaeli.co    +#+  +:+       +#+        */
+/*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 16:23:45 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 01:42:02 by itaskira         ###   ########.fr       */
+/*   Updated: 2025/06/24 06:28:16 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	builtin_export(char **args, t_shell *shell)
 	while (args[i])
 	{
 		if (!is_valid_key(args[i]))
-			fprintf(stderr, "export: not a valid identifier\n");
+			ft_putstr_fd("export: not a valid identifier\n", STDERR_FILENO);
 		else if (!replace_env(args[i], &shell->env))
 			shell->env = append_env(args[i], shell->env);
 		i++;

@@ -6,30 +6,18 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 15:31:10 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 05:23:38 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 06:26:49 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Built-In/Cd/cd.h"
-#include "Built-In/Echo/echo.h"
-#include "Built-In/Env/env.h"
-#include "Built-In/Exit/exit.h"
-#include "Built-In/Export/export.h"
-#include "Built-In/Pwd/pwd.h"
-#include "Built-In/Unset/unset.h"
 #include "Executor/executor.h"
-#include "Lexer/lexer.h"
 #include "Libft/libft.h"
-#include "Parser/parser.h"
 #include "Signal/signal.h"
 #include "Utils/Memory/memory.h"
 #include "Utils/Status/status.h"
-#include "minishell.h"
 #include <readline/history.h>
 #include <readline/readline.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 
 static int	process_input(char *input, t_shell *shell)
 {

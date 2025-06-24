@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 06:12:02 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 06:20:17 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 06:30:37 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,9 @@ char	*get_cmd_path_and_check(char *cmd, char **env)
 	cmd_path = get_cmd_path(cmd, env);
 	if (!cmd_path)
 	{
-		fprintf(stderr, "Command not found: %s\n", cmd);
+		ft_putstr_fd("Command not found: ", STDERR_FILENO);
+		ft_putstr_fd(cmd, STDERR_FILENO);
+		ft_putendl_fd("", STDERR_FILENO);
 		exit(127);
 	}
 	return (cmd_path);
