@@ -24,7 +24,11 @@ SRC += \
 	Parser/parser.c \
 	Parser/parser_utils.c \
 	Parser/parser_handlers.c \
-	Utils/utils.c \
+	Utils/env_utils.c \
+	Utils/expand_utils.c \
+	Utils/expand_core.c \
+	Utils/expand_calc.c \
+	Utils/exec_utils.c \
 	Utils/syntax.c \
 	Utils/Memory/memory.c \
 	Utils/Redirections/redirection.c \
