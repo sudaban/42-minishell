@@ -21,19 +21,11 @@ SRC += \
 	Lexer/lexer.c \
 	Lexer/lexer_split.c \
 	Lexer/token_utils.c \
-	Lexer/lexer_utils.c \
 	Parser/parser.c \
-	Parser/parser_utils.c \
-	Parser/parser_handlers.c \
-	Utils/env_utils.c \
-	Utils/expand_utils.c \
-	Utils/expand_core.c \
-	Utils/expand_calc.c \
-	Utils/exec_utils.c \
+	Utils/utils.c \
 	Utils/syntax.c \
 	Utils/Memory/memory.c \
 	Utils/Redirections/redirection.c \
-	Utils/Redirections/heredoc.c \
 	Utils/Status/status.c \
 	Executor/executor.c \
 	Executor/pipe.c \

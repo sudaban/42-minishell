@@ -6,81 +6,140 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 12:35:43 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 02:35:18 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 04:37:59 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
 #include "../Libft/libft.h"
 #include "../Utils/Memory/memory.h"
 #include "../Utils/Redirections/redirection.h"
-
 #include "parser.h"
-#include "../Utils/Redirections/redirection.h"
-#include "../Libft/libft.h"
 #include <stdio.h>
 
-static void	handle_word_token(t_ast_node *current,
-	t_token *token, t_shell *shell)
+static void	add_arg(char ***args, char *value)
 {
-	char	*processed;
-	char	*expanded;
+	int		i;
+	char	**new_args;
 
-	if (token->type == T_SINGLE_QUOTE)
-		shell->should_expand = false;
-	else if (token->type == T_DOUBLE_QUOTE)
-		shell->should_expand = true;
-	processed = clean_quotes(token->value, shell);
-	if (shell->should_expand)
+	if (!*args)
 	{
-		expanded = expand_variables(processed, shell);
-		add_arg(&current->args, expanded);
-		memory_free(expanded);
+		*args = memory_malloc(sizeof(char *) * 2);
+		(*args)[0] = ft_strdup(value);
+		(*args)[1] = NULL;
+		return ;
 	}
-	else
-		add_arg(&current->args, processed);
-	memory_free(processed);
+	for (i = 0; (*args)[i]; i++)
+		;
+	new_args = memory_malloc(sizeof(char *) * (i + 2));
+	for (i = 0; (*args)[i]; i++)
+		new_args[i] = (*args)[i];
+	new_args[i] = ft_strdup(value);
+	new_args[i + 1] = NULL;
+	*args = new_args;
 }
 
-static void	handle_heredoc_token(t_ast_node *current,
-	t_token *token, t_shell *shell)
+static void	add_redirection(t_redirection **list, t_token *token)
 {
-	char	*filename;
-	size_t	len;
-	bool	quoted;
+	t_redirection	*new;
+	t_redirection	*tmp;
 
-	if (!token->next)
-		return ;
-	filename = token->next->value;
-	len = ft_strlen(filename);
-	quoted = false;
-	if (len > 1 && (filename[0] == '\'' || filename[0] == '"')
-		&& filename[len - 1] == filename[0])
-		quoted = true;
-	if (token->next->type == T_SINGLE_QUOTE || token->next->type == 2)
-		shell->should_expand = false;
-	add_redir_quoted(&current->redirections, token, quoted);
+	new = memory_malloc(sizeof(t_redirection));
+	new->type = token->type;
+	new->filename = ft_strdup(token->next->value);
+	new->next = NULL;
+	if (!*list)
+		*list = new;
+	else
+	{
+		tmp = *list;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
+	}
+}
+
+static t_ast_node	*create_node(void)
+{
+	t_ast_node	*node;
+
+	node = memory_malloc(sizeof(t_ast_node));
+	node->args = NULL;
+	node->redirections = NULL;
+	node->next_pipe = NULL;
+	return (node);
 }
 
 t_ast_node	*parse_tokens(t_token *token, t_shell *shell)
 {
 	t_ast_node	*head;
 	t_ast_node	*current;
+	char		*processed;
+	char		*expanded;
+	char		*filename;
+	size_t		len;
+	bool		quoted;
 
 	head = NULL;
 	current = NULL;
+	processed = NULL;
 	while (token && token->type != T_EOF)
 	{
 		if (!current)
-			init_node(&head, &current);
-		if (is_word_token(token))
-			handle_word_token(current, token, shell);
-		else if (is_redirection_token(token))
-			handle_redirect_token(&token, current);
+		{
+			current = create_node();
+			if (!head)
+				head = current;
+		}
+		if (token->type == T_WORD || token->type == T_ENV_VAR
+			|| token->type == T_DOUBLE_QUOTE || token->type == T_SINGLE_QUOTE)
+		{
+			if (token->type == T_SINGLE_QUOTE)
+				shell->should_expand = false;
+			else if (token->type == T_DOUBLE_QUOTE)
+				shell->should_expand = true;
+			processed = clean_quotes(token->value, shell);
+			if (shell->should_expand)
+			{
+				expanded = expand_variables(processed, shell);
+				add_arg(&current->args, expanded);
+				memory_free(expanded);
+			}
+			else
+			{
+				add_arg(&current->args, processed);
+			}
+			memory_free(processed);
+		}
+		else if (token->type == T_REDIRECT_IN || token->type == T_REDIRECT_OUT
+			|| token->type == T_APPEND_OUT)
+		{
+			if (token->next)
+				add_redirection(&current->redirections, token);
+			token = token->next;
+		}
 		else if (token->type == T_HEREDOC)
-			handle_heredoc_token(current, token, shell);
+		{
+			if (token->next)
+			{
+				filename = token->next->value;
+				len = ft_strlen(filename);
+				quoted = false;
+				if (len > 1 && (filename[0] == '\'' || filename[0] == '"')
+						&& filename[len - 1] == filename[0])
+					quoted = true;
+				if (token->next->type == T_SINGLE_QUOTE
+					|| token->next->type == T_DOUBLE_QUOTE)
+					shell->should_expand = false;
+				add_redirection_with_quoted(&current->redirections, token,
+					quoted);
+				token = token->next;
+			}
+		}
 		else if (token->type == T_PIPE)
-			handle_pipe_token(&current);
+		{
+			current->next_pipe = create_node();
+			current = current->next_pipe;
+		}
 		token = token->next;
 	}
 	return (head);
@@ -94,12 +153,8 @@ void	print_ast_debug(t_ast_node *ast)
 	while (ast)
 	{
 		printf("Command:\n");
-		i = 0;
-		while (ast->args && ast->args[i])
-		{
+		for (i = 0; ast->args && ast->args[i]; i++)
 			printf("  Arg[%d]: %s\n", i, ast->args[i]);
-			i++;
-		}
 		redir = ast->redirections;
 		while (redir)
 		{

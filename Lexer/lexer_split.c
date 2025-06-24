@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 00:47:54 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 03:00:57 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 04:39:34 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ static size_t	count_words(const char *str, char delimiter)
 	quote = 0;
 	while (str[i])
 	{
-		skip_delimiters(str, &i, delimiter);
+		while (str[i] == delimiter)
+			i++;
 		if (!str[i])
 			break ;
 		word_count++;

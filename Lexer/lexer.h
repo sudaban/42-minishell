@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:52:55 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 03:00:49 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 04:49:02 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,5 @@ t_token				*lexer(char **input);
 void				print_token_debug(t_token *tokens);
 char				*clean_quotes(const char *input, t_shell *shell);
 char				**lexer_split(char const *s, char c, t_shell *shell);
-t_token_type		match_specials(const char *value);
-t_token_type		match_operator(const char *value);
-void				skip_delimiters(const char *str, int *i, char delimiter);
+void				adjust_should_expand(const char *input, t_shell *shell);
 #endif
