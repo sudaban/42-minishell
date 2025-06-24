@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:51:26 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 05:22:49 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 05:52:03 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,25 @@
 #include "../minishell.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+static int	handle_quote(const char *input, int *i, char *quote, t_shell *shell)
+{
+	if ((*quote) == 0 && (input[*i] == '\'' || input[*i] == '"'))
+	{
+		if (input[*i] == '\'')
+			shell->should_expand = false;
+		(*quote) = input[*i];
+		(*i)++;
+		return (1);
+	}
+	if (input[*i] == (*quote))
+	{
+		(*quote) = 0;
+		(*i)++;
+		return (1);
+	}
+	return (0);
+}
 
 char	*clean_quotes(const char *input, t_shell *shell)
 {
@@ -31,21 +50,9 @@ char	*clean_quotes(const char *input, t_shell *shell)
 	quote = 0;
 	while (input[i])
 	{
-		if ((input[i] == '\'' || input[i] == '"') && quote == 0)
-		{
-			if (input[i] == '\'')
-				shell->should_expand = false;
-			quote = input[i++];
-		}
-		else if (input[i] == quote)
-		{
-			quote = 0;
-			i++;
-		}
-		else
-		{
-			result[j++] = input[i++];
-		}
+		if (handle_quote(input, &i, &quote, shell))
+			continue ;
+		result[j++] = input[i++];
 	}
 	result[j] = '\0';
 	return (result);

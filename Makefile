@@ -21,6 +21,7 @@ SRC += \
 	Lexer/lexer.c \
 	Lexer/lexer_split.c \
 	Lexer/token_utils.c \
+	Lexer/lexer_helper.c \
 	Parser/parser.c \
 	Utils/utils.c \
 	Utils/helper.c \

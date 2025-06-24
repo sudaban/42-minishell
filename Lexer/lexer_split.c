@@ -6,7 +6,7 @@
 /*   By: sdaban <sdaban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 00:47:54 by sdaban            #+#    #+#             */
-/*   Updated: 2025/06/24 04:39:34 by sdaban           ###   ########.fr       */
+/*   Updated: 2025/06/24 05:51:12 by sdaban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,9 @@ static size_t	count_words(const char *str, char delimiter)
 {
 	size_t	word_count;
 	int		i;
-	char	quote;
 
 	word_count = 0;
 	i = 0;
-	quote = 0;
 	while (str[i])
 	{
 		while (str[i] == delimiter)
@@ -31,16 +29,7 @@ static size_t	count_words(const char *str, char delimiter)
 		if (!str[i])
 			break ;
 		word_count++;
-		while (str[i])
-		{
-			if (!quote && (str[i] == '\'' || str[i] == '"'))
-				quote = str[i];
-			else if (quote && str[i] == quote)
-				quote = 0;
-			else if (!quote && str[i] == delimiter)
-				break ;
-			i++;
-		}
+		i += skip_word(&str[i], delimiter);
 	}
 	return (word_count);
 }
