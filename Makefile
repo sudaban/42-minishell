@@ -26,6 +26,8 @@ SRC += \
 	Utils/syntax.c \
 	Utils/Memory/memory.c \
 	Utils/Redirections/redirection.c \
+	Utils/Redirections/red_utils.c \
+	Utils/Redirections/utils2.c \
 	Utils/Status/status.c \
 	Executor/executor.c \
 	Executor/pipe.c \
